@@ -1,0 +1,77 @@
+:root {
+    --color-azul-1: #003b46;
+    --color-azul-2: #07575b;
+    --color-azul-3: #66a5ad;
+    --color-azul-4: #c4dfe6;
+    --color-gris-1: #505160;
+    --color-gris-2: #68829e;
+
+    --color-morado-1: #9979A3;
+    --color-morado-4: #FBF0FF;
+    --color-morado-2: #E6C8EF;
+    --color-morado-3: #E6DAED;
+    --color-morado-3-1: #988E9E;
+    --color-verde-1: #8EA368;
+    --color-verde-2: #E2F0C9;
+    
+
+}
+
+.barra-card-enc
+{
+    background-color: var(--color-morado-3-1);
+}
+.body-card-enc
+{
+    background-color: var(--color-morado-3);
+    
+}
+.font-titulo-enc
+{
+    color: var(--color-morado-1);
+}
+.font-subtitulo-enc
+{
+    
+    font-weight: bold;
+}
+
+.barra-card-preg
+{
+    background-color: var(--color-morado-2);
+}
+
+.body-card-preg
+{
+    background-color: var(--color-morado-4);
+}
+
+
+.barra-card-1
+{
+    background-color: var(--color-gris-1);
+}
+.barra-card-2
+{
+    background-color: var(--color-gris-2);
+}
+.barra-modal
+{
+    background-color: var(--color-azul-3);
+}
+.body-modal
+{
+    background-color: var(--color-azul-4);
+}
+.font-titulo
+{
+    color: var(--color-azul-1);
+}
+.font-subtitulo
+{
+    color: var(--color-azul-2);
+}
+.font-white
+{
+    color: white;
+}
