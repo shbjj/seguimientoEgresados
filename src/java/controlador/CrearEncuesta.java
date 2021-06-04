@@ -62,7 +62,7 @@ public class CrearEncuesta extends HttpServlet {
             //Connection conexion = DriverManager.getConnection("jdbc:postgresql://45.33.125.66:5432/prepa_seis_v1", "postgres", "Adgjmptw1797@1");
 
             //Query para conectar
-            String query = "Insert into encuestas(nombre, descripcion, instrucciones, despedida, fecha, clave) values('" + nombre + "','" + descripcion + "','" + instrucciones + "','" + despedida + "','" + fecha + "','" + clave + "');";
+            String query = "Insert into encuestas(nombre, descripcion, instrucciones, despedida, fecha, clave, habilitada) values('" + nombre + "','" + descripcion + "','" + instrucciones + "','" + despedida + "','" + fecha + "','" + clave + "','s');";
             //out.println(query);//Imprimir por errores
 
             //Ejecutar el Query

@@ -24,6 +24,18 @@
         <servlet-name>CargarPreguntasRespuestas</servlet-name>
         <servlet-class>controlador.CargarPreguntasRespuestas</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VerEncuesta</servlet-name>
+        <servlet-class>controlador.VerEncuesta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdministrarEncuesta</servlet-name>
+        <servlet-class>controlador.AdministrarEncuesta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Eliminar</servlet-name>
+        <servlet-class>controlador.encuesta.Eliminar</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ValidaAdmin</servlet-name>
         <url-pattern>/ValidaAdmin</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>CargarPreguntasRespuestas</servlet-name>
         <url-pattern>/CargarPreguntasRespuestas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerEncuesta</servlet-name>
+        <url-pattern>/VerEncuesta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdministrarEncuesta</servlet-name>
+        <url-pattern>/AdministrarEncuesta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Eliminar</servlet-name>
+        <url-pattern>/Eliminar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

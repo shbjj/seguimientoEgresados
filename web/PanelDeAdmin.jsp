@@ -75,44 +75,17 @@
               </div>
             </div>
             <div class="card-body mt-3">
-              <h5 class="card-title">Ver encuesta</h5>
+              <h5 class="card-title">Administrar encuestas</h5>
               <p class="card-text">
-                Vea las preguntas y respuestas posibles de una encuesta
-                existente.
+                Despliega una lista con las encuestas existentes,
+                y permite ver los detalles de esta, editarla,
+                deshabilitarla/habilitarla y borrarla.
               </p>
 
-              <form action="<%=request.getContextPath()%>/VerEncuesta" method="POST">
-                <p>
-                  Seleccione la encuesta de la que quiere ver la información.
-                </p>
-
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  id="verEncuesta"
-                  name="verEncuesta"
-                  required
-                >
-                <%
-                for(int c=0; c<encuestas_total.length; c++)
-                {
-                %>
-
-                <option value="<%=encuestas_total[c][0]%>"><%=encuestas_total[c][1]%></option>
-                
-                <%
-                }
-                %>
-                </select>
-                <button
-                  class="btn btn-primary boton mt-3"
+              <a href="<%=request.getContextPath()%>/AdministrarEncuesta" class="btn btn-primary boton mt-3"
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"
-                  title="Haga clic aquí para visualizar una encuesta"
-                >
-                  Ver encuesta
-                </button>
-              </form>
+                  title="Haga clic aquí para administar las encuestas">Administrar encuestas</a>
             </div>
           </div>
         </div>

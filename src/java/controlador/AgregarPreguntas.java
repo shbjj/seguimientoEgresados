@@ -71,14 +71,7 @@ public class AgregarPreguntas extends HttpServlet {
                     obligatoria_s//obligatoria
             );
 
-            //Imprimir (solo para verificar
-            /*out.print(
-                    "<br>------------------------------------ <br>"
-                    + " No. Pregunta: " + preguntas[(numPreg - 1)].getId_preguntas()
-                    + "<br> Pregunta: " + preguntas[(numPreg - 1)].getPregunta()
-                    + "<br> Tipo: " + preguntas[(numPreg - 1)].getTipo()
-                    + "<br> Obligatoria: " + preguntas[(numPreg - 1)].getObligatoria());*/
-
+           
             //Ahora, ya que se tienen los datos de la pregunta, hay que ver si es 
             //diferente a abierta (ya que entonces tendra respuestas)
             if (preguntas[(numPreg - 1)].getTipo().compareTo("Abierta") == 0) {//Si la pregunta es abierta, no hacer nada

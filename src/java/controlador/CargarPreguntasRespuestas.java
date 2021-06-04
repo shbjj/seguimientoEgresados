@@ -25,7 +25,7 @@ import modelo.Respuesta;
  */
 public class CargarPreguntasRespuestas extends HttpServlet {
 
-    //VAriable que almacenara el num de preguntas, se modificara cuando se ocupe el metodo getNumPreguntas
+    //Variable que almacenara el num de preguntas, se modificara cuando se ocupe el metodo getNumPreguntas
     int cantPreguntas;
 
     //Para hacer pruebas (sirve para imprimir desde el Servlet
