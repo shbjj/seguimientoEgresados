@@ -36,6 +36,14 @@
         <servlet-name>Eliminar</servlet-name>
         <servlet-class>controlador.encuesta.Eliminar</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeshabilitarHabilitar</servlet-name>
+        <servlet-class>controlador.encuesta.DeshabilitarHabilitar</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargarEncuestaPreguntas</servlet-name>
+        <servlet-class>controlador.CargarEncuestaPreguntas</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ValidaAdmin</servlet-name>
         <url-pattern>/ValidaAdmin</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>Eliminar</servlet-name>
         <url-pattern>/Eliminar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeshabilitarHabilitar</servlet-name>
+        <url-pattern>/DeshabilitarHabilitar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargarEncuestaPreguntas</servlet-name>
+        <url-pattern>/CargarEncuestaPreguntas</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -10,11 +10,14 @@ package modelo;
  * @author Hugo Blancas Dominguez
  */
 public class Respuesta {
+
+    //Tamaño de los campos de las respuestas
+    public int tamOpcAbierta=600;
     //Datos unicos de las Respuestas
     private int id_encuestas, id_preguntas, num_control;
     private String date;
     //Opcion seleccionada
-    public int []respuestas;
+    public int[] respuestas;
     //En caso de ser una pregunta abierta
     private String opcAbierta;
     //Tipo
@@ -28,12 +31,16 @@ public class Respuesta {
         this.tipo = tipo;
     }
 
+    public Respuesta() {
+
+    }
+
     public Respuesta(int id_encuestas, int id_preguntas, int num_control, String date) {
         this.id_encuestas = id_encuestas;
         this.id_preguntas = id_preguntas;
         this.num_control = num_control;
         this.date = date;
-        respuestas= new int[9];
+        respuestas = new int[9];
     }
 
     public int getId_encuestas() {
@@ -68,8 +75,6 @@ public class Respuesta {
         this.date = date;
     }
 
-   
-
     public String getOpcAbierta() {
         return opcAbierta;
     }
@@ -78,29 +83,24 @@ public class Respuesta {
         this.opcAbierta = opcAbierta;
     }
 
-    
     @Override
-    public String toString(){
-        String tempo="<br>Respuesta "+id_encuestas+id_preguntas+""
-                + "<br>No. Control: "+num_control
-                + "<br>Tipo: "+tipo
-                + "<br>Fecha: "+date;
-        
-        if(tipo.compareTo("Abierta") == 0)
-        {
-            tempo+="<br>Resp: "+opcAbierta;
-        }
-        else
-        {
-            for(int c=0; c<respuestas.length; c++)
-            {
-               tempo+="<br>Resp"+(c+1)+" :"+respuestas[c];  
+    public String toString() {
+        String tempo = "<br>Respuesta " + id_encuestas + id_preguntas + ""
+                + "<br>No. Control: " + num_control
+                + "<br>Tipo: " + tipo
+                + "<br>Fecha: " + date;
+
+        if (tipo.compareTo("Abierta") == 0) {
+            tempo += "<br>Resp: " + opcAbierta;
+        } else {
+            for (int c = 0; c < respuestas.length; c++) {
+                tempo += "<br>Resp" + (c + 1) + " :" + respuestas[c];
             }
-           
+
         }
-        
+
         return tempo;
-        
+
         /*
         id_encuestas, id_preguntas, num_control;
     private String date;
@@ -110,8 +110,7 @@ public class Respuesta {
     private String opcAbierta;
     //Tipo
     private String tipo;
-        */
+         */
     }
-    
-    
+
 }

@@ -142,7 +142,7 @@ public class ContestarEncuesta extends HttpServlet {
             
             
             
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
             request.setAttribute("DESCRIPCION", "Error al insertar en la base de datos:\n" + ex);
@@ -150,15 +150,7 @@ public class ContestarEncuesta extends HttpServlet {
             request.setAttribute("DIRECCIONBOTON", "ContestaEncuesta");
             request.getRequestDispatcher("mensaje.jsp").forward(request, response);
             out.print("<br>----Error al insertar en la base de datos:" + ex);
-        } catch (SQLException ex) {
-            request.setAttribute("NOMBRE_MENSAJE", "Error");
-            request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
-            request.setAttribute("DESCRIPCION", "Error al insertar en la base de datos:\n" + ex);
-            request.setAttribute("MENSAJEBOTON", "Volver a contestar");
-            request.setAttribute("DIRECCIONBOTON", "ContestaEncuesta");
-            request.getRequestDispatcher("mensaje.jsp").forward(request, response);
-            out.print("<br>----Error al insertar en la base de datos:" + ex);
-        }
+        } 
     }
     
     void insertar(Connection conexion, Respuesta respuesta) throws SQLException {

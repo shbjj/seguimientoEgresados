@@ -10,6 +10,8 @@ package modelo;
  * @author hbdye
  */
 public class Pregunta {
+    //Tamaño de campos de las preguntas
+    public int tamPregunta=400, opc=150;
     //Datos unicos de las preguntas
     private int id_encuestas, id_preguntas;
     private String pregunta, tipo, obligatoria;
@@ -18,6 +20,10 @@ public class Pregunta {
     private int num_respuestas;
     public String [] respuestas;
 
+    public Pregunta()
+    {
+        
+    }
     public Pregunta(int id_encuestas, int id_preguntas, String pregunta, String tipo, String obligatoria) {
         this.id_encuestas = id_encuestas;
         this.id_preguntas = id_preguntas;

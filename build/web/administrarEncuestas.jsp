@@ -76,17 +76,18 @@
                             </th>
                         </tr>
                         <% } else {
-                            for (int encuesta = 0; encuesta < encuestasEgresados.length; encuesta++) {
+                            for (int encuesta = 0; encuesta < encuestasEgresados.length; encuesta++) 
+                            {
                         %>   
                         <tr>
                             <th scope="row"><%=encuestasEgresados[encuesta][1]%>
                             </th>
                             <td class=""><%=encuestasEgresados[encuesta][2]%></td>
                             <td class=""><%
-                          if (encuestasEgresados[encuesta][3].compareTo("s") == 0) { %>
-                                Si   
+                                if (encuestasEgresados[encuesta][3].compareTo("s") == 0) { %>
+                                <span class="text-success fw-bold">Si</span>   
                                 <%} else { %>
-                                No
+                                <span class="text-danger fw-bold">No</span>
                                 <% }
                                 %>
                             </td>
@@ -108,39 +109,45 @@
                                     </div>
                                     <!--Boton editar-->
                                     <div class="col-lg-2 me-xl-2">
-                                        <a href="<%=request.getContextPath()%>/EditarEncuesta?idEncuesta=<%=encuestasEgresados[encuesta][0]%>"
+                                        <a href="<%=request.getContextPath()%>/CargarEncuestaPreguntas?idEncuesta=<%=encuestasEgresados[encuesta][0]%>"
                                            class="btn btn-primary bi bi-pencil-fill"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar"></a>
                                     </div>
                                     <!--Boton deshabilitar-->
                                     <div class="col-lg-2 me-xl-2">
                                         <a href="<%=request.getContextPath()%>/DeshabilitarHabilitar?idEncuesta=<%=encuestasEgresados[encuesta][0]%>" 
-                                           <% if (encuestasEgresados[encuesta][3].compareTo("s") == 0) { 
-                                           //Si la encuesta esta habilitada
+                                           <% if (encuestasEgresados[encuesta][3].compareTo("s") == 0) {
+                                                   //Si la encuesta esta habilitada
                                            %>
-                                            class="btn btn-warning bi bi-dash-square-dotted text-white"
+                                           class="btn btn-warning bi bi-dash-square-dotted text-white"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Deshabilitar"
-                                            <%} else { 
-                                            //Si no esta habilitada
-                                            %>
-                                            class="btn btn-warning bi bi-dash-square-fill text-white"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Habilitar"
-                                            <% }
-                                            %>
+                                           onclick="return confirm('¿Esta seguro que desea deshabilitar la encuesta \''+
+                                                       '<%=encuestasEgresados[encuesta][1]%>?\'')"
+                                           <%} else {
+                                               //Si no esta habilitada
+                                           %>
+                                           class="btn btn-warning bi bi-dash-square-fill text-white"
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Habilitar"
+                                           onclick="return confirm('¿Esta seguro que desea habilitar la encuesta \''+
+                                                       '<%=encuestasEgresados[encuesta][1]%>\'')"
+                                           <% }
+                                           %>
                                            ></a>
                                     </div>
                                     <!--Boton borrar-->
                                     <div class="col-lg-2 me-xl-2">
                                         <a href="<%=request.getContextPath()%>/Eliminar?idEncuesta=<%=encuestasEgresados[encuesta][0]%>"
                                            class="btn btn-danger bi bi-trash-fill"
-                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar"></a>
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar"
+                                           onclick="return confirm('¿Esta seguro que desea borrar la encuesta \''+
+                                                       '<%=encuestasEgresados[encuesta][1]%>?\'')"></a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
 
                         <% }
-                    }%>
+                            }%>
                     </tbody>
                 </table>
             </div>
@@ -171,10 +178,10 @@
                             </th>
                             <td class=""><%=encuestasEmpleadores[encuesta][2]%></td>
                             <td class=""><%
-                          if (encuestasEmpleadores[encuesta][3].compareTo("s") == 0) { %>
-                                Si   
+                                if (encuestasEmpleadores[encuesta][3].compareTo("s") == 0) { %>
+                                <span class="text-success fw-bold">Si</span>   
                                 <%} else { %>
-                                No
+                                <span class="text-danger fw-bold">No</span>
                                 <% }
                                 %>
                             </td>
@@ -189,46 +196,52 @@
                                     </div>
                                     <!--Boton ver resultados de encuesta-->
                                     <div class="col-lg-2 me-xl-2">
-                                        <a href="<%=request.getContextPath()%>/GraficosEncuesta?idEncuesta=<%=encuestasEgresados[encuesta][0]%>"
+                                        <a href="<%=request.getContextPath()%>/GraficosEncuesta?idEncuesta=<%=encuestasEmpleadores[encuesta][0]%>"
                                            class="btn btn-primary bi bi-bar-chart-line-fill text-white"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" 
                                            title="Graficas de las respuestas"></a>
                                     </div>
                                     <!--Boton editar-->
                                     <div class="col-lg-2 me-xl-2">
-                                        <a href="<%=request.getContextPath()%>/EditarEncuesta?idEncuesta=<%=encuestasEmpleadores[encuesta][0]%>"
+                                        <a href="<%=request.getContextPath()%>/CargarEncuestaPreguntas?idEncuesta=<%=encuestasEmpleadores[encuesta][0]%>"
                                            class="btn btn-primary bi bi-pencil-fill"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar"></a>
                                     </div>
                                     <!--Boton deshabilitar-->
                                     <div class="col-lg-2 me-xl-2">
                                         <a href="<%=request.getContextPath()%>/DeshabilitarHabilitar?idEncuesta=<%=encuestasEmpleadores[encuesta][0]%>" 
-                                           <% if (encuestasEgresados[encuesta][3].compareTo("s") == 0) { 
-                                           //Si la encuesta esta habilitada
+                                           <% if (encuestasEmpleadores[encuesta][3].compareTo("s") == 0) {
+                                                   //Si la encuesta esta habilitada
                                            %>
-                                            class="btn btn-warning bi bi-dash-square-dotted text-white"
+                                           class="btn btn-warning bi bi-dash-square-dotted text-white"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Deshabilitar"
-                                            <%} else { 
-                                            //Si no esta habilitada
-                                            %>
-                                            class="btn btn-warning bi bi-dash-square-fill text-white"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Habilitar"
-                                            <% }
-                                            %>
-                                           ></a>
+                                           onclick="return confirm('¿Esta seguro que desea deshabilitar la encuesta \''+
+                                                       '<%=encuestasEmpleadores[encuesta][1]%>?\'')"
+                                           <%} else {
+                                               //Si no esta habilitada
+                                           %>
+                                           class="btn btn-warning bi bi-dash-square-fill text-white"
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Habilitar"
+                                           onclick="return confirm('¿Esta seguro que desea habilitar la encuesta \''+
+                                                       '<%=encuestasEmpleadores[encuesta][1]%>?\'')"
+                                           <% }
+                                           %>
+                                           onclick="return confirm('')"></a>
                                     </div>
                                     <!--Boton borrar-->
                                     <div class="col-lg-2 me-xl-2">
                                         <a href="<%=request.getContextPath()%>/Eliminar?idEncuesta=<%=encuestasEmpleadores[encuesta][0]%>"
                                            class="btn btn-danger bi bi-trash-fill"
-                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar"></a>
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar"
+                                           onclick="return confirm('¿Esta seguro que desea eliminar la encuesta \''+
+                                                       '<%=encuestasEmpleadores[encuesta][1]%>?\'')"></a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
 
                         <% }
-                    }%>
+                            }%>
                     </tbody>
                 </table>
             </div>

@@ -110,24 +110,27 @@
                 <div id="contenedorPreguntas" class="contenedorPreguntas">
                 
                 </div>
+                <div class="d-grid gap-2">
+                <a class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalPregunta">
+                    Agregar Pregunta
+                </a>
+                </div>
                 <div id="divBotonAgregar" style="display:none">
                     <div class='d-grid gap-2 mb-3'>
-                        <button class="btn btn-primary boton mt-3"
+                        <button class="btn btn-danger boton mt-3"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
-                        title="Terminar y guardar preguntas">Guardar las preguntas</button>
+                        title="Terminar y guardar preguntas" 
+                        onclick="return confirm('¿Estas seguro que quieres guardar las preguntas?')"
+                        >Guardar las preguntas</button>
                     </div>
                 </div>
             </form>
                 
 
 
-            <div class="d-grid gap-2">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#modalPregunta">
-                    Agregar Pregunta
-                </button>
-            </div>
+            
         </div>
 
 

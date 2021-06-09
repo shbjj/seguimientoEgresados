@@ -3,6 +3,7 @@
     Created on : 1/04/2021, 07:51:06 PM
     Author     : hbdye
 --%>
+<%@page import="modelo.Encuesta"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,6 +21,9 @@
     </head>
     <body>
         <%
+            //Objetos para obtener los valores de tamaños de campos
+            Encuesta tamanio=new Encuesta();
+            //Fecha
             Date dNow = new Date();
             SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
             String fecha = ft.format(dNow);
@@ -32,24 +36,24 @@
             <form action="<%=request.getContextPath()%>/CrearEncuesta" method="POST">
                 <div class="mb-3 form-floating">
                     <input type="text" class="form-control" name="nombre" id="exampleFormControlInput1" 
-                           placeholder="Nombre de la encusta" maxlength="150" required>
+                           placeholder="Nombre de la encusta" maxlength="<%=tamanio.tamNombre%> " required>
                     <label for="exampleFormControlInput1" class="form-label">Nombre de la encuesta</label>
                 </div>
 
                 <div class="mb-3 form-floating">
 
-                    <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" rows="4" 
-                              placeholder="Descripción" maxlength="500" required></textarea>
+                    <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" style="height: 100px"  
+                              placeholder="Descripción" maxlength="<%=tamanio.tamOtros%> " required></textarea>
                     <label for="exampleFormControlTextarea1" class="form-label">Descripción</label>
                 </div>
                 <div class="mb-3 form-floating">
-                    <textarea class="form-control" name="instrucciones" id="exampleFormControlTextarea1" rows="4" 
-                              placeholder="Instrucciones" maxlength="500" required></textarea>
+                    <textarea class="form-control" name="instrucciones" id="exampleFormControlTextarea1" style="height: 100px"  
+                              placeholder="Instrucciones" maxlength="<%=tamanio.tamOtros%> " required></textarea>
                     <label for="exampleFormControlTextarea1" class="form-label">Instrucciones</label>
                 </div>
                 <div class="mb-3 form-floating">
-                    <textarea class="form-control" name="despedida" id="exampleFormControlTextarea1" rows="4" 
-                              placeholder="Despedida" maxlength="500" required ></textarea>
+                    <textarea class="form-control" name="despedida" id="exampleFormControlTextarea1" style="height: 100px"  
+                              placeholder="Despedida" maxlength="<%=tamanio.tamOtros%> " required ></textarea>
                     <label for="exampleFormControlTextarea1" class="form-label">Despedida</label>
                 </div>
                 <div class="form-group row">
@@ -64,7 +68,7 @@
                     </div>
                     <div class="col-md-8 mb-3 form-floating">
                         <input type="text" class="form-control" name="clave" id="exampleFormControlInput2" 
-                               placeholder="Nombre de la encusta" maxlength="6" >
+                               placeholder="Nombre de la encusta" maxlength="<%=tamanio.tamClave%> " >
                         <label for="exampleFormControlInput1" class="form-labe2">Clave de la encuesta</label>
                     </div>
                 </div>
