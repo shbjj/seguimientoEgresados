@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador;
+package controlador.encuesta;
 
+import controlador.Conexion_bd;
+import controlador.ConvertirUTF8;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -116,14 +118,16 @@ public class AgregarPreguntas extends HttpServlet {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
             request.setAttribute("DESCRIPCION", "Error al insertar en la base de datos:\n" + ex);
+            request.setAttribute("MENSAJEBOTON", "Volver");
+            request.setAttribute("DIRECCIONBOTON", "AdministrarEncuesta");
             request.getRequestDispatcher("mensaje.jsp").forward(request, response);
-            //out.print("<br>----Error al insertar en la base de datos:" + ex);
         } catch (SQLException ex) {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
             request.setAttribute("DESCRIPCION", "Error al insertar en la base de datos:\n" + ex);
+            request.setAttribute("MENSAJEBOTON", "Volver");
+            request.setAttribute("DIRECCIONBOTON", "AdministrarEncuesta");
             request.getRequestDispatcher("mensaje.jsp").forward(request, response);
-            //out.print("<br>----Error al insertar en la base de datos:" + ex);
         }
 
     }

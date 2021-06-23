@@ -20,6 +20,6 @@
         <%=nombre%>
         <%=tipo%>
         
-        <a href="<%=request.getContextPath()%>/PanelDeAdmin">Panel de admin</a>
+        <% response.sendRedirect(request.getContextPath()+"/PanelDeAdmin"); %>
     </body>
 </html>

@@ -25,9 +25,6 @@
     </head>
     <body>
         <%
-            //Objeto para obtener el numero de caracteres que puede tener una pregunta
-            Respuesta tamRespuesta= new Respuesta();
-            
             //Objetos para obtener los valores de tamaños de campos
             Encuesta tamanio = new Encuesta();
             //Obtener los Atributos enviados desde el Servlet
@@ -39,9 +36,6 @@
             String fechaEnc = (String) request.getAttribute("FECHA");
             String claveEnc = (String) request.getAttribute("CLAVE");
             Pregunta[] preguntas = (Pregunta[]) request.getAttribute("PREGUNTAS");
-            Respuesta[] respuestas = (Respuesta[]) request.getAttribute("RESPUESTAS");
-
-            //Con base a estos, hay que mostrar la encuesta para contestar
 %>
         <div class="container">
             <div class="menuContainer mb-4"></div>
@@ -224,15 +218,28 @@
                 }
             }
             %>
-
+            <!--Boton de guardar cambios-->
             <div class="row">
-                <div class="col-12">
-                    <button class="btn btn-primary boton mb-3"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Guardar cambios">Guardar cambios</button>
+                <div class="col-6">
+                    <div class="d-grid gap-2 mb-3">
+                        <a class="btn btn-danger boton mb-3"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                onclick="return confirm('¿Esta seguro que desea salir y descartar los cambios? Ningun cambio se guardara.')"
+                                href="<%=request.getContextPath()%>/AdministrarEncuesta"
+                                title="Descartar todos los cambios y salir">Descartar cambios</a>
+                    </div> 
+                </div>
+                <div class="col-6">
+                    <div class="d-grid gap-2 mb-3">
+                        <button class="btn btn-primary boton mb-3"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                title="Guardar cambios">Guardar cambios</button>
+                    </div> 
                 </div>
             </div>
+            
             
         </form>
     </div><!-- Fin del container -->

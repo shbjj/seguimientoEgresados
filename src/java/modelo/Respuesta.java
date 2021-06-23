@@ -18,6 +18,7 @@ public class Respuesta {
     private String date;
     //Opcion seleccionada
     public int[] respuestas;
+    public String[] respuestasS;
     //En caso de ser una pregunta abierta
     private String opcAbierta;
     //Tipo
@@ -32,7 +33,7 @@ public class Respuesta {
     }
 
     public Respuesta() {
-
+respuestas = new int[9];
     }
 
     public Respuesta(int id_encuestas, int id_preguntas, int num_control, String date) {

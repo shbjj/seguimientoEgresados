@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador;
+package controlador.encuesta;
 
+import controlador.Conexion_bd;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -39,7 +40,10 @@ public void service(HttpServletRequest request, HttpServletResponse response)
                 String [][] arreglo= new String[c][4];
 
                 //Obtener la informacion de las encuestas para egresados (no tienen clave), y almacenarla en el arreglo
-                getEncuestas(arreglo,"select id_encuestas, nombre, fecha, habilitada from encuestas where clave='';");
+                getEncuestas(arreglo,"select id_encuestas, nombre, fecha, habilitada "
+                        + "from encuestas "
+                        + "where clave='' "
+                        + "order by id_encuestas;");
                 
             //Obtener TODAS las encuestas
                 int c2=getNumEncuestas("select count(*) from encuestas where clave !='';");
@@ -48,7 +52,10 @@ public void service(HttpServletRequest request, HttpServletResponse response)
                 String [][] arreglo2= new String[c2][4];
 
                 //Obtener la informacion de las encuestas para empleadores (tienen clave), y almacenarla en el arreglo
-                getEncuestas(arreglo2,"select id_encuestas, nombre, fecha, habilitada from encuestas where clave!='';");
+                getEncuestas(arreglo2,"select id_encuestas, nombre, fecha, habilitada "
+                        + "from encuestas "
+                        + "where clave!='' "
+                        + "order by id_encuestas;");
                 
             
             //Enviar los arreglos al JSP de PanelDeAdmin
@@ -58,17 +65,12 @@ public void service(HttpServletRequest request, HttpServletResponse response)
             request.setAttribute("ENCUESTAS_EMPLEADORES", arreglo2);
             request.getRequestDispatcher("administrarEncuestas.jsp").forward(request, response);
             
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
             request.setAttribute("DESCRIPCION", "Error al obtener información de la base de datos:\n" + ex);
             request.getRequestDispatcher("mensaje.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            request.setAttribute("NOMBRE_MENSAJE", "Error");
-            request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
-            request.setAttribute("DESCRIPCION", "Error al obtener información de la base de datos:\n" + ex);
-            request.getRequestDispatcher("mensaje.jsp").forward(request, response);
-        }
+        } 
 
     }
     private int getNumEncuestas(String query) throws SQLException

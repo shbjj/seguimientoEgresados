@@ -6,7 +6,7 @@
     </servlet>
     <servlet>
         <servlet-name>CrearEncuesta</servlet-name>
-        <servlet-class>controlador.CrearEncuesta</servlet-class>
+        <servlet-class>controlador.encuesta.CrearEncuesta</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PanelDeAdmin</servlet-name>
@@ -14,23 +14,23 @@
     </servlet>
     <servlet>
         <servlet-name>AgregarPreguntas</servlet-name>
-        <servlet-class>controlador.AgregarPreguntas</servlet-class>
+        <servlet-class>controlador.encuesta.AgregarPreguntas</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ContestarEncuesta</servlet-name>
-        <servlet-class>controlador.ContestarEncuesta</servlet-class>
+        <servlet-class>controlador.encuesta.ContestarEncuesta</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CargarPreguntasRespuestas</servlet-name>
-        <servlet-class>controlador.CargarPreguntasRespuestas</servlet-class>
+        <servlet-class>controlador.encuesta.CargarPreguntasRespuestas</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>VerEncuesta</servlet-name>
-        <servlet-class>controlador.VerEncuesta</servlet-class>
+        <servlet-class>controlador.encuesta.VerEncuesta</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdministrarEncuesta</servlet-name>
-        <servlet-class>controlador.AdministrarEncuesta</servlet-class>
+        <servlet-class>controlador.encuesta.AdministrarEncuesta</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Eliminar</servlet-name>
@@ -42,7 +42,31 @@
     </servlet>
     <servlet>
         <servlet-name>CargarEncuestaPreguntas</servlet-name>
-        <servlet-class>controlador.CargarEncuestaPreguntas</servlet-class>
+        <servlet-class>controlador.encuesta.CargarEncuestaPreguntas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditarEncuesta</servlet-name>
+        <servlet-class>controlador.encuesta.EditarEncuesta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GraficosEncuesta</servlet-name>
+        <servlet-class>controlador.encuesta.GraficosEncuesta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AgregarAlumno</servlet-name>
+        <servlet-class>controlador.alumno.AgregarAlumno</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdministrarAlumno</servlet-name>
+        <servlet-class>controlador.alumno.AdministrarAlumno</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CambiarEstadoAlumno</servlet-name>
+        <servlet-class>controlador.alumno.CambiarEstadoAlumno</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarAlumno</servlet-name>
+        <servlet-class>controlador.alumno.EliminarAlumno</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ValidaAdmin</servlet-name>
@@ -87,6 +111,30 @@
     <servlet-mapping>
         <servlet-name>CargarEncuestaPreguntas</servlet-name>
         <url-pattern>/CargarEncuestaPreguntas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditarEncuesta</servlet-name>
+        <url-pattern>/EditarEncuesta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GraficosEncuesta</servlet-name>
+        <url-pattern>/GraficosEncuesta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AgregarAlumno</servlet-name>
+        <url-pattern>/AgregarAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdministrarAlumno</servlet-name>
+        <url-pattern>/AdministrarAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CambiarEstadoAlumno</servlet-name>
+        <url-pattern>/CambiarEstadoAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarAlumno</servlet-name>
+        <url-pattern>/EliminarAlumno</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

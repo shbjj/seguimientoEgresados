@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador;
+package controlador.encuesta;
 
+import controlador.Conexion_bd;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +43,7 @@ public class CargarPreguntasRespuestas extends HttpServlet {
         int idEncuesta = Integer.parseInt((String) request.getParameter("modificarEncuesta"));
         //Obtener el numero de control
         //int numControl = Integer.parseInt((String) request.getParameter("modificarEncuesta"));
-        int numControl=17091014;
+        int numControl=17091016;
 
         //Inicializar cosas necesarias pata la conexion a BD
         try {

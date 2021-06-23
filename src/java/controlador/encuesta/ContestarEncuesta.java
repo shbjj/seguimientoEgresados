@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador;
+package controlador.encuesta;
 
+import controlador.Conexion_bd;
+import controlador.ConvertirUTF8;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +46,7 @@ public class ContestarEncuesta extends HttpServlet {
         int idEncuesta = Integer.parseInt((String) request.getParameter("idEncuesta"));
         int cantPreguntas = Integer.parseInt((String) request.getParameter("cantPreguntas"));
         boolean contestada = Boolean.parseBoolean((String) request.getParameter("contestada"));
-        int numControl = 17091014;//Para pruebas
+        int numControl = 17091016;//Para pruebas
 //        out.print(contestada);
 
         //Inicializar cosas necesarias pata la conexion a BD

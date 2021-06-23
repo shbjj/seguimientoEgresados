@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.encuesta;
+package controlador.alumno;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
@@ -13,47 +13,54 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Respuesta;
 
 /**
  *
  * @author hbdye
  */
-public class DeshabilitarHabilitar extends HttpServlet {
-    
+public class CambiarEstadoAlumno extends HttpServlet {
+
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //Declaración de las variables donde se guardara la información
-        int idEncuesta = Integer.parseInt((String) request.getParameter("idEncuesta"));
-        //Inicializar cosas necesarias pata la conexion a BD
-        try {
+        String[] matriculas = request.getParameterValues("cambioEstado");
+        
+        if(matriculas!=null)//Si existen matriculas recibidas
+        {
+           try {//Inicializar cosas necesarias pata la conexion a BD
             //Conexion a la BD
             Class.forName("org.postgresql.Driver");
             //Direccion, puerto, nombre de BD, usuario y contraseña
             
-            String habilitado=getEstado(idEncuesta);
+            String estado;
+            for(int cont=0; cont<matriculas.length; cont++)
+            {
+                estado=getEstado(matriculas[cont]);
+                cambiarEstado(estado, matriculas[cont]);
+            }
             
-            deshabilitarHabilitar(habilitado, idEncuesta);
-            //Redireccionar a AdministrarEncuesta
-            response.sendRedirect(request.getContextPath() + "/AdministrarEncuesta");
             
         } catch (ClassNotFoundException | SQLException ex) {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
             request.setAttribute("DESCRIPCION", "Error al modificar la base de datos:\n" + ex);
             request.setAttribute("MENSAJEBOTON", "Volver");
-            request.setAttribute("DIRECCIONBOTON", "AdministrarEncuesta");
+            request.setAttribute("DIRECCIONBOTON", "AdministrarAlumno");
             request.getRequestDispatcher("mensaje.jsp").forward(request, response);
             
         } 
+        }
+        
+            //Redireccionar a AdministrarEncuesta
+            response.sendRedirect(request.getContextPath() + "/AdministrarAlumno");
+         
     }
     
-    private void deshabilitarHabilitar(String habilitado, int idEncuestas) throws SQLException
+    private void cambiarEstado(String estado, String matricula) throws SQLException
     {
         Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
         Connection conexion = DriverManager.getConnection(
@@ -61,26 +68,26 @@ public class DeshabilitarHabilitar extends HttpServlet {
                     datos_conexion.getUsuario(),
                     datos_conexion.getContrasenia());
         //QUERY DE actualizacion
-            String query = "UPDATE encuestas ";
-            if(habilitado.compareTo("s")==0)
+            String query = "UPDATE alumnos ";
+            if(estado.compareTo("INSCRITO")==0)
             {
-                query+="SET habilitada='n' ";
+                query+="SET status ='EGRESADO' ";
             }
             else
             {
-                query+="SET habilitada='s' ";
+                query+="SET status ='INSCRITO' ";
             }
-            query+="WHERE id_encuestas="+idEncuestas;
+            query+="WHERE num_control ="+matricula;
             //Ejecutar el Query
             Statement st = conexion.createStatement();
             st.executeUpdate(query);
     }
     
-    private String getEstado(int idEncuesta) throws SQLException {
+    private String getEstado(String matricula) throws SQLException {
         //Obtener la cantidad de preguntas que tiene una encuesta
-        String query = "SELECT habilitada "
-                + "FROM encuestas "
-                + "WHERE id_encuestas=" + idEncuesta;
+        String query = "SELECT status "
+                + "FROM alumnos "
+                + "WHERE num_control =" + matricula;
 
         //Variable temporal donde se guardara el valor 
         String temp ="";
@@ -102,5 +109,4 @@ public class DeshabilitarHabilitar extends HttpServlet {
         
         return temp;
     }
-
 }
