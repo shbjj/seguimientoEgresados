@@ -31,7 +31,9 @@
     <title>Panel de Aministración</title>
   </head>
   <body>
-    <div class="container mt-4">
+    <div class="container">
+        <%@ include file = "../navbar.jsp" %>
+            <br>
       <div class="menuContainer mb-4"></div>
 
       <h1 class="mb-3">Opciones del Administrador</h1>

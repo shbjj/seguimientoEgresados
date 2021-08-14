@@ -9,11 +9,14 @@ import controlador.Conexion_bd;
 import controlador.ConvertirUTF8;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+//import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+//import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -94,13 +97,7 @@ public class EditarEncuesta extends HttpServlet {
         try {
             //Conexion a la BD
             Class.forName("org.postgresql.Driver");
-            //Direccion, puerto, nombre de BD, usuario y contraseña
-            Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
-            Connection conexion = DriverManager.getConnection(
-                    datos_conexion.getDireccion(), 
-                    datos_conexion.getUsuario(), 
-                    datos_conexion.getContrasenia());
-
+            
             //Actualizar datos de la encuesta
             update(idEncuesta, nombre, descripcion, instrucciones, despedida, fecha);
             /*
@@ -124,6 +121,18 @@ public class EditarEncuesta extends HttpServlet {
         }
     }
     void update(int idEncuesta, String nombre, String descripcion, String instrucciones, String despedida, String fecha) throws SQLException {
+        //Convertir String de la fecha a SqlDate
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date =null;
+            try
+            {
+                 date=sdf1.parse(fecha);
+            } catch (ParseException ex) {
+            //Codigo de exception
+            }
+            java.sql.Date fechaSQL = new java.sql.Date(date.getTime());
+
+
         //Abrir conexion
         Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
         Connection conexion = DriverManager.getConnection(
@@ -131,17 +140,37 @@ public class EditarEncuesta extends HttpServlet {
                     datos_conexion.getUsuario(),
                     datos_conexion.getContrasenia());
         String query="UPDATE encuestas "
-                    + "SET nombre='"+nombre+"', "
+                    + "SET nombre=?, "
+                    + "descripcion=?, "
+                    + "instrucciones=?, "
+                    + "despedida=?, "
+                    + "fecha=? "
+                    + "WHERE id_encuestas=?";
+        
+        //Ejecutar el Query
+        PreparedStatement st = null;
+        st=conexion.prepareStatement(query);
+        
+        //Agregar datos a st
+        st.setString(1, nombre);
+        st.setString(2, descripcion);
+        st.setString(3, instrucciones);
+        st.setString(4, despedida);
+        st.setDate(5, fechaSQL);
+        st.setInt(6, idEncuesta);
+        /*
+             + "SET nombre='"+nombre+"', "
                 + "descripcion='"+descripcion+"', "
                 + "instrucciones='"+instrucciones+"', "
                 + "despedida='"+despedida+"', "
-                + "fecha='"+fecha+"' ";
+                + "fecha='"+fecha+"' 
+        idEncuesta";
+        */
         
-        query+="WHERE id_encuestas="+idEncuesta;
-        
-        //Ejecutar el Query
-        Statement st = conexion.createStatement();
-        st.executeUpdate(query);
+        st.executeUpdate();
+        //Cerrar sesión
+        conexion.close();
+        st.close();
     }
     void update(Pregunta preg) throws SQLException {
         //Abrir conexion
@@ -151,24 +180,51 @@ public class EditarEncuesta extends HttpServlet {
                     datos_conexion.getUsuario(),
                     datos_conexion.getContrasenia());
         String query="UPDATE preguntas "
-                    + "SET pregunta='"+preg.getPregunta()+"', "
-                    + "obligatoria='"+preg.getObligatoria()+"' ";
+                    + "SET "
+                    + "pregunta=?, "
+                    + "obligatoria=? ";
         //Dependiendo del tipo de pregunta, asi dependera el QUERY
         if (preg.getTipo().compareTo("Abierta") != 0) {//Si la pregunta no abierta
             
                     for (int c=0; c<9; c++)//Recordemos que hay maximo 9 respuestas, por eso c>9
                     {
-                     if(c<preg.getNum_respuestas())//Si se cumple, entonces obtener el valor de la respuesta y guardarla en el QUERY
+                     if(c<preg.getNum_respuestas())//Si se cumple, entonces poner ? en el QUERY
                      {
-                         query+=", opc"+(c+1)+"='"+preg.respuestas[c]+"' ";
+                         query+=", opc"+(c+1)+"=? ";
+                         //query+=", opc"+(c+1)+"='"+preg.respuestas[c]+"' ";
                      }
                     }
         }
-        query+="WHERE id_encuestas="+preg.getId_encuestas()+" and id_preguntas="+preg.getId_preguntas();
-        
+        query+="WHERE id_encuestas=? and id_preguntas=?";
+        //query+="WHERE id_encuestas="+preg.getId_encuestas()+" and id_preguntas="+preg.getId_preguntas();
         //Ejecutar el Query
-        Statement st = conexion.createStatement();
-        st.executeUpdate(query);
+        PreparedStatement st = null;
+        st=conexion.prepareStatement(query);
+        //Agregar datos al st
+        //Datos que todas las preguntas tienen
+        st.setString(1, preg.getPregunta());
+        st.setString(2, preg.getObligatoria());
+        int t=2;//En caso de ser preg. abierta el valor se queda en 2, si no, se cambia en el if
+        //Si la pregunta es diferente de abierta
+        if (preg.getTipo().compareTo("Abierta") != 0) {//Si la pregunta no abierta
+            for (int c=0; c<9; c++)//Recordemos que hay maximo 9 respuestas, por eso c>9
+            {
+                if(c<preg.getNum_respuestas())//Si se cumple, entonces obtener el valor de la respuesta y guardarla en el st
+                {
+                    t=c+3;//Posicion en la que se guardara el valor
+                    st.setString((t), preg.respuestas[c]);
+                }
+            }        
+        }
+        st.setInt((t+1),preg.getId_encuestas());
+        st.setInt((t+2),preg.getId_preguntas());
+        
+        
+        st.executeUpdate();
+        
+        //Cerrar sesión
+        conexion.close();
+        st.close();
     }
 
 }

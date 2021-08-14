@@ -7,11 +7,13 @@ package controlador.encuesta;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,12 +33,12 @@ public class CrearEncuesta extends HttpServlet {
         //PrintWriter out = response.getWriter();
 
         //Recibir los parametros desde un JSP
-        String nombre, descripcion, instrucciones, despedida, fecha, clave;
+        String nombre, descripcion, instrucciones, despedida, fechaTemp, clave;
         nombre = (String) request.getParameter("nombre");
         descripcion = (String) request.getParameter("descripcion");
         instrucciones = (String) request.getParameter("instrucciones");
         despedida = (String) request.getParameter("despedida");
-        fecha = (String) request.getParameter("fecha");
+        fechaTemp = (String) request.getParameter("fecha");
         clave = (String) request.getParameter("clave");
 
         //Pasar los datos recibidos a UTF-8
@@ -48,22 +50,38 @@ public class CrearEncuesta extends HttpServlet {
         instrucciones = new String(tempBytes, StandardCharsets.UTF_8);
         tempBytes = despedida.getBytes();
         despedida = new String(tempBytes, StandardCharsets.UTF_8);
-        tempBytes = fecha.getBytes();
-        fecha = new String(tempBytes, StandardCharsets.UTF_8);
+        
+        //Convertir String de fecha
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date =null;
+            try
+            {
+                 date=sdf1.parse(fechaTemp);
+            } catch (ParseException ex) {
+        //Codigo de exception
+            }
+            java.sql.Date fecha = new java.sql.Date(date.getTime());
+
         tempBytes = clave.getBytes();
         clave = new String(tempBytes, StandardCharsets.UTF_8);
+        
 
         try {
             //Conexion a la BD
             Class.forName("org.postgresql.Driver");
             //Direccion, puerto, nombre de BD, usuario y contraseña
               Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
-       Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());
+            Connection conexion = DriverManager.getConnection(
+                    datos_conexion.getDireccion(), 
+                    datos_conexion.getUsuario(), 
+                    datos_conexion.getContrasenia());
 
             //Connection conexion = DriverManager.getConnection("jdbc:postgresql://45.33.125.66:5432/prepa_seis_v1", "postgres", "Adgjmptw1797@1");
 
             //Query para conectar
-            String query = "Insert into encuestas(nombre, descripcion, instrucciones, despedida, fecha, clave, habilitada) values('" + nombre + "','" + descripcion + "','" + instrucciones + "','" + despedida + "','" + fecha + "','" + clave + "','s');";
+            String query = "Insert into encuestas"
+                    + "(nombre, descripcion, instrucciones, despedida, fecha, clave, habilitada) "
+                    + "values(?,?,?,?,?,?,'s');";
             //out.println(query);//Imprimir por errores
 
             //Ejecutar el Query
@@ -73,7 +91,12 @@ public class CrearEncuesta extends HttpServlet {
             long id_encuesta = 0;
             int id = 0;
             PreparedStatement ps = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            
+            ps.setString(1,nombre);
+            ps.setString(2,descripcion);
+            ps.setString(3,instrucciones);
+            ps.setString(4,despedida);
+            ps.setDate(5,fecha);
+            ps.setString(6,clave);
             id_encuesta = ps.executeUpdate();
 
             ResultSet generatedKeys = ps.getGeneratedKeys();
@@ -87,11 +110,16 @@ public class CrearEncuesta extends HttpServlet {
             request.setAttribute("DESCRIPCION", descripcion);
             request.setAttribute("INSTRUCCIONES", instrucciones);
             request.setAttribute("DESPEDIDA", despedida);
-            request.setAttribute("FECHA", fecha);
+            request.setAttribute("FECHA", fechaTemp);
             request.setAttribute("CLAVE", clave);
 
+            //Cerrar conexion
+            conexion.close();
+            ps.close();
+            generatedKeys.close();
+            
             //Pasar a otra Pagina
-            RequestDispatcher vista = request.getRequestDispatcher("agregarPreguntas.jsp");
+            RequestDispatcher vista = request.getRequestDispatcher("Encuesta/agregarPreguntas.jsp");
             //Enviar al area de preguntas los request y response
             vista.forward(request, response);
 

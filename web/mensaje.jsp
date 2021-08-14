@@ -29,6 +29,8 @@ String mensajeBoton=(String)request.getAttribute("MENSAJEBOTON");
   </head>
   <body>
     <div class="container ">
+        
+            
         <div class="row g-4 mt-md-5">
             <div class="col-md-2"></div>
             

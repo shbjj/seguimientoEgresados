@@ -43,6 +43,12 @@ respuestas = new int[9];
         this.date = date;
         respuestas = new int[9];
     }
+    public Respuesta(int id_encuestas, int id_preguntas, String date) {
+        this.id_encuestas = id_encuestas;
+        this.id_preguntas = id_preguntas;
+        this.date = date;
+        respuestas = new int[9];
+    }
 
     public int getId_encuestas() {
         return id_encuestas;

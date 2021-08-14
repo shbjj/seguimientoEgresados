@@ -8,9 +8,9 @@ package controlador;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
-import java.util.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
+//import java.util.*;
+//import java.net.*;
+//import java.nio.charset.StandardCharsets;
 import java.sql.*;
 
 /**
@@ -89,6 +89,10 @@ public class PanelDeAdmin extends HttpServlet {
             //Saber cuantos resultados hay
             rs.next();
             int c = rs.getInt(1);
+            //Cerrar conexion
+            conexion.close();
+            rs.close();
+            st.close();
             
             return c;
     }
@@ -115,7 +119,10 @@ public class PanelDeAdmin extends HttpServlet {
                //Aumentar contador temp
                temp++;
            }
-            
+            //Cerrar conexion
+            conexion.close();
+            rs.close();
+            st.close();
             return arreglo;
     }
 

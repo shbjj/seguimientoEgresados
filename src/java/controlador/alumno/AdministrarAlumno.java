@@ -7,7 +7,7 @@ package controlador.alumno;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -57,12 +57,15 @@ public class AdministrarAlumno extends HttpServlet {
                         + "where status!='INSCRITO' "
                         + "order by app;");
                 
+            //Obtener la fecha en la que se hizo el ultimo avance de semestre
+            String fechaAvance=getFechaAvanceSemestre();
+            request.setAttribute("FECHA_AVANCE_SEMESTRE", fechaAvance);//Enviar la fecha
             
             //Enviar los arreglos al JSP de PanelDeAdmin
             
             request.setAttribute("ALUMNOS", alumnos);
             request.setAttribute("EGRESADOS", egresados);
-            request.getRequestDispatcher("Alumno/administrarAlumnos.jsp").forward(request, response);
+            request.getRequestDispatcher("Alumno/administrar.jsp").forward(request, response);
             
         } catch (ClassNotFoundException | SQLException ex) {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
@@ -88,7 +91,11 @@ public class AdministrarAlumno extends HttpServlet {
         //Saber cuantos resultados hay
         rs.next();
         int c = rs.getInt(1);
-
+        //Cerrar conexion
+          conexion.close();
+          rs.close();
+          st.close();
+          
         return c;
     }
     
@@ -117,14 +124,49 @@ public class AdministrarAlumno extends HttpServlet {
                {
                    tempString="";
                }
-               alumn[temp].setApm(tempString);//Puede ser nulo, por eso no se ocupa trim
+               alumn[temp].setApm(tempString.trim());//Puede ser nulo, por eso no se ocupa trim
                alumn[temp].setSemestre(rs.getString(5).trim());
                alumn[temp].setGrupo(rs.getString(6).trim());
                        
                //Aumentar contador temp
                temp++;
            }
-            
+           //Cerrar conexion
+            conexion.close();
+            rs.close();
+            st.close(); 
+           
             return alumn;
+    }
+    
+    private String getFechaAvanceSemestre() throws SQLException
+    {   //Obtener la fecha en la que se selecciono por ultima vez la opcion de avanzar semestre
+        String query="SELECT fecha "
+                + "from avance_semestre "
+                + "where fecha="
+                + "(select max(fecha) from avance_semestre)";
+         //Direccion, puerto, nombre de BD, usuario y contraseña
+        Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
+        Connection conexion = DriverManager.getConnection(
+                datos_conexion.getDireccion(),
+                datos_conexion.getUsuario(), 
+                datos_conexion.getContrasenia());
+        Statement stmt=null;
+        ResultSet rs=null;
+        //Agregar la informacion de conexion al stmt
+        stmt=conexion.createStatement();
+        //Ejecutar el query
+        rs=stmt.executeQuery(query);
+        //Editar la variable Query, para poner ahi la fecha
+        query="NUNCA";
+        while(rs.next())
+        {
+            query=rs.getString(1).trim();
+        }
+        conexion.close();
+        stmt.close();
+        rs.close();
+        return query;
+      
     }
 }

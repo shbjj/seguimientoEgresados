@@ -7,18 +7,18 @@ package controlador.encuesta;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.servlet.RequestDispatcher;
+//import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Respuesta;
+//import modelo.Respuesta;
 
 /**
  *
@@ -74,6 +74,10 @@ public class DeshabilitarHabilitar extends HttpServlet {
             //Ejecutar el Query
             Statement st = conexion.createStatement();
             st.executeUpdate(query);
+            
+            //Cerrar conexion
+            conexion.close();
+            st.close();
     }
     
     private String getEstado(int idEncuesta) throws SQLException {
@@ -99,6 +103,10 @@ public class DeshabilitarHabilitar extends HttpServlet {
             //Obtener los valores
             temp = rs.getString(1).trim();
         }
+        //Cerrar conexion
+            conexion.close();
+            st.close();
+            rs.close();
         
         return temp;
     }

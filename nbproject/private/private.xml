@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>web/Alumno/administrarAlumnos.jsp</url>
+            <bookmark id="1">
+                <name/>
+                <line>43</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/Alumno/administrarAlumnos.jsp</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/encuesta/AgregarPreguntas.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/Encuesta/agregar.jsp</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/Encuesta/lista.jsp</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/encuesta/ListaContesto.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/encuesta/CrearEncuesta.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/Encuesta/agregarPreguntas.jsp</file>
         </group>
     </open-files>
 </project-private>

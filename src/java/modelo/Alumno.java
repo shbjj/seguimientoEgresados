@@ -15,7 +15,31 @@ public class Alumno {
             app, apm, estatus, carrera,
             plan, grupo, semestre,
             fechaNac, curp, sexo, 
-            estado, municipio, cp;
+            estado, municipio, cp, generacion, telefono, correo;
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getGeneracion() {
+        return generacion;
+    }
+
+    public void setGeneracion(String generacion) {
+        this.generacion = generacion;
+    }
 
     public Alumno() {
     }

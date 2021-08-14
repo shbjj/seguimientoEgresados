@@ -8,12 +8,12 @@ package controlador.encuesta;
 import controlador.Conexion_bd;
 import controlador.ConvertirUTF8;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -98,8 +98,11 @@ public class AgregarPreguntas extends HttpServlet {
             //Conexion a la BD
             Class.forName("org.postgresql.Driver");
             //Direccion, puerto, nombre de BD, usuario y contraseña
-              Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
-       Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());
+            Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
+       Connection conexion = DriverManager.getConnection(
+               datos_conexion.getDireccion(), 
+               datos_conexion.getUsuario(), 
+               datos_conexion.getContrasenia());
 
             /*
                 *Ahora que ya se tienen las preguntas guardadas en el arreglo, hay que recorrer el arreglo
@@ -108,6 +111,9 @@ public class AgregarPreguntas extends HttpServlet {
             for (int numPreg = 0; numPreg < cantPreguntas; numPreg++) {
                 insertar(conexion, preguntas[numPreg]);
             }
+            
+            //Cerrar conexion
+            conexion.close();
             request.setAttribute("NOMBRE_MENSAJE", "Hecho");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "¡Preguntas guardadas exitosamente!");
             request.setAttribute("DESCRIPCION", "Las preguntas de la encuesta se han guardado, estan listas para poder ser contestadas.");
@@ -134,35 +140,24 @@ public class AgregarPreguntas extends HttpServlet {
 
     void insertar(Connection conexion, Pregunta preg) throws SQLException {
         String query;
-        //Dependiendo del tipo de pregunta, asi dependera el QUERY
+        PreparedStatement st = null;
+        //Dependiendo del tipo de pregunta, asi dependera el QUERY y los datos que se cargaran al
+        //PreparedStattement
         if (preg.getTipo().compareTo("Abierta") == 0) {//Si la pregunta es abierta
             //Query para conectar
-            query = "INSERT INTO preguntas VALUES ("
-                    + preg.getId_encuestas() + ","
-                    + preg.getId_preguntas() + ", '"
-                    + preg.getPregunta() + "','"
-                    + preg.getTipo() + "','"
-                    + preg.getObligatoria() + "',"
-                    + preg.getNum_respuestas() + ","
+            query = "INSERT INTO preguntas VALUES (?,?,?,?,?,?,"
                     + "NULL,NULL, NULL, NULL, NULL,NULL,NULL,NULL,NULL,NULL)";
+           
         }
         else
         {//Si la pregunta no es abierta
             //Query para conectar
-            query = "INSERT INTO preguntas VALUES ("
-                    + preg.getId_encuestas() + ","
-                    + preg.getId_preguntas() + ", '"
-                    + preg.getPregunta() + "','"
-                    + preg.getTipo() + "','"
-                    + preg.getObligatoria() + "',"
-                    + preg.getNum_respuestas() + ",";
-                    //"NULL,NULL, NULL, NULL, NULL,NULL,NULL,NULL,NULL,NULL";
-                    
+            query = "INSERT INTO preguntas VALUES (?,?,?,?,?,?,";
                     for (int c=0; c<9; c++)//Recordemos que hay maximo 9 respuestas, por eso c>9
                     {
-                     if(c<preg.getNum_respuestas())//Si se cumple, entonces obtener el valor de la respuesta y guardarla en el QUERY
+                     if(c<preg.getNum_respuestas())//Si se cumple, entonces poner ? en el QUERY
                      {
-                         query+="'"+preg.respuestas[c]+"',";
+                         query+="?,";
                      }
                      else//Si no se cumple, guardar NULL en el query, ya que no habra respuesta
                      {
@@ -171,16 +166,33 @@ public class AgregarPreguntas extends HttpServlet {
                     }
                     query+="NULL)";
         }
+        //Agregarle la conexion y el query al PreparedStatement
+        st=conexion.prepareStatement(query);
+        //Agregar campos a insertar
+        st.setInt(1, preg.getId_encuestas());
+        st.setInt(2, preg.getId_preguntas());
+        st.setString(3, preg.getPregunta());
+        st.setString(4, preg.getTipo());
+        st.setString(5, preg.getObligatoria());
+        st.setInt(6, preg.getNum_respuestas());
+        if (preg.getTipo().compareTo("Abierta") != 0)//Si la pregunta no es abierta...
+        {
+            for (int c = 0; c < 9; c++)//Recordemos que hay maximo 9 respuestas, por eso c>9
+            {
+                if (c < preg.getNum_respuestas())//Si se cumple, entonces obtener el valor de la respuesta y guardarla en el QUERY
+                {
+                    //query+="'"+preg.respuestas[c]+"',";
+                    st.setString((c + 7), preg.respuestas[c]);//Poner en st el valor de la respuesta
+                }
+            }
 
-        /*
-        INSERT INTO preguntas VALUES (1,1,'HOLA','ABIERTA','N',1,NULL,NULL, NULL, NULL, NULL,NULL,NULL,NULL,NULL,NULL);
-         */
-        //out.println("<br>-----------QUERY-------------<br>" + query);//Imprimir por errores
-
-        //Ejecutar el Query
-        Statement st = conexion.createStatement();
-        st.executeUpdate(query);
+        }
         
+        
+        //Ejecutar el Query
+        st.executeUpdate();
+        //Cerrar conexion
+          st.close();
         //out.println("<br>INSERTADO");
     }
 

@@ -7,9 +7,9 @@ package controlador.encuesta;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,7 +43,7 @@ public void service(HttpServletRequest request, HttpServletResponse response)
                 getEncuestas(arreglo,"select id_encuestas, nombre, fecha, habilitada "
                         + "from encuestas "
                         + "where clave='' "
-                        + "order by id_encuestas;");
+                        + "order by habilitada desc;");
                 
             //Obtener TODAS las encuestas
                 int c2=getNumEncuestas("select count(*) from encuestas where clave !='';");
@@ -55,15 +55,13 @@ public void service(HttpServletRequest request, HttpServletResponse response)
                 getEncuestas(arreglo2,"select id_encuestas, nombre, fecha, habilitada "
                         + "from encuestas "
                         + "where clave!='' "
-                        + "order by id_encuestas;");
-                
-            
+                        + "order by habilitada desc;");
             //Enviar los arreglos al JSP de PanelDeAdmin
             //request.setAttribute("NUM_ENCUESTAS_EGRESADOS", c);//Enviar el numero de encuestas de alumnos
             request.setAttribute("ENCUESTAS_EGRESADOS", arreglo);
             //request.setAttribute("NUM_ENCUESTAS_EMPLEADORES", c2);//Enviar el numero de encuestas totales
             request.setAttribute("ENCUESTAS_EMPLEADORES", arreglo2);
-            request.getRequestDispatcher("administrarEncuestas.jsp").forward(request, response);
+            request.getRequestDispatcher("Encuesta/administrar.jsp").forward(request, response);
             
         } catch (ClassNotFoundException | SQLException ex) {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
@@ -87,7 +85,10 @@ public void service(HttpServletRequest request, HttpServletResponse response)
             //Saber cuantos resultados hay
             rs.next();
             int c = rs.getInt(1);
-            
+            //Cerrar conexion
+            conexion.close();
+            rs.close();
+            st.close();
             return c;
     }
     private String[][] getEncuestas( String [][] arreglo, String query) throws SQLException
@@ -113,7 +114,10 @@ public void service(HttpServletRequest request, HttpServletResponse response)
                //Aumentar contador temp
                temp++;
            }
-            
+            //Cerrar conexion
+            conexion.close();
+            rs.close();
+            st.close();
             return arreglo;
     }
 }

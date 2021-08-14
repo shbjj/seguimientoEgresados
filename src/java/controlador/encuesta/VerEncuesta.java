@@ -49,7 +49,7 @@ public class VerEncuesta extends HttpServlet {
                 getPreguntas(request, idEncuesta);
 
                 //Mandar a llamar al JSP que mostrara las preguntas y/o respuestas
-                request.getRequestDispatcher("verEncuesta.jsp").forward(request, response);
+                request.getRequestDispatcher("Encuesta/ver.jsp").forward(request, response);
             } catch (ClassNotFoundException | SQLException  ex) {
                 request.setAttribute("NOMBRE_MENSAJE", "Error");
                 request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
@@ -103,6 +103,10 @@ public class VerEncuesta extends HttpServlet {
             request.setAttribute("CLAVE", clave);
             request.setAttribute("HABILITADA", habilitada);
         }
+        //Cerrar sesión
+        conexion.close();
+        st.close();
+        rs.close();
     }
 
     private void getPreguntas(HttpServletRequest request, int idEncuesta) throws SQLException {
@@ -118,7 +122,10 @@ public class VerEncuesta extends HttpServlet {
                 + "WHERE id_encuestas=" + idEncuesta;
         //Direccion, puerto, nombre de BD, usuario y contraseña
         Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
-        Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());
+        Connection conexion = DriverManager.getConnection(
+                datos_conexion.getDireccion(), 
+                datos_conexion.getUsuario(), 
+                datos_conexion.getContrasenia());
 
 //Connection conexion = DriverManager.getConnection("jdbc:postgresql://45.33.125.66:5432/prepa_seis_v1", "postgres", "Adgjmptw1797@1");
 
@@ -173,6 +180,10 @@ public class VerEncuesta extends HttpServlet {
             //Incrementar contador
             c++;
         }
+        //Cerrar sesión
+        conexion.close();
+        st.close();
+        rs.close();
         //Enviamos el arreglo al JSP
         request.setAttribute("PREGUNTAS", preguntas);
 
@@ -205,6 +216,11 @@ public class VerEncuesta extends HttpServlet {
         }
         
         cantPreguntas=temp;//variable global para el num de preguntas
+        
+        //Cerrar sesión
+        conexion.close();
+        st.close();
+        rs.close();
         return temp;
     }
     

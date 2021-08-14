@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>ValidaAdmin</servlet-name>
-        <servlet-class>usuarios.ValidaAdmin</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CrearEncuesta</servlet-name>
         <servlet-class>controlador.encuesta.CrearEncuesta</servlet-class>
     </servlet>
@@ -68,10 +64,62 @@
         <servlet-name>EliminarAlumno</servlet-name>
         <servlet-class>controlador.alumno.EliminarAlumno</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>ValidaAdmin</servlet-name>
-        <url-pattern>/ValidaAdmin</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>CargarDatosAlumno</servlet-name>
+        <servlet-class>controlador.alumno.CargarDatosAlumno</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditarAlumno</servlet-name>
+        <servlet-class>controlador.alumno.EditarAlumno</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerAlumno</servlet-name>
+        <servlet-class>controlador.alumno.VerAlumno</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IniciarSesion</servlet-name>
+        <servlet-class>controlador.IniciarSesion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IndexAlumno</servlet-name>
+        <servlet-class>controlador.alumno.IndexAlumno</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AgregarUsuario</servlet-name>
+        <servlet-class>controlador.usuario.AgregarUsuario</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdministrarUsuario</servlet-name>
+        <servlet-class>controlador.usuario.AdministrarUsuario</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargarUsuario</servlet-name>
+        <servlet-class>controlador.usuario.CargarUsuario</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditarUsuario</servlet-name>
+        <servlet-class>controlador.usuario.EditarUsuario</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarUsuario</servlet-name>
+        <servlet-class>controlador.usuario.EliminarUsuario</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CambiarContrasenia</servlet-name>
+        <servlet-class>controlador.usuario.CambiarContrasenia</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AvanzarSemestre</servlet-name>
+        <servlet-class>controlador.alumno.AvanzarSemestre</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RetrocederSemestre</servlet-name>
+        <servlet-class>controlador.alumno.RetrocederSemestre</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListaContesto</servlet-name>
+        <servlet-class>controlador.encuesta.ListaContesto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CrearEncuesta</servlet-name>
         <url-pattern>/CrearEncuesta</url-pattern>
@@ -135,6 +183,62 @@
     <servlet-mapping>
         <servlet-name>EliminarAlumno</servlet-name>
         <url-pattern>/EliminarAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargarDatosAlumno</servlet-name>
+        <url-pattern>/CargarDatosAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditarAlumno</servlet-name>
+        <url-pattern>/EditarAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerAlumno</servlet-name>
+        <url-pattern>/VerAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IniciarSesion</servlet-name>
+        <url-pattern>/IniciarSesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndexAlumno</servlet-name>
+        <url-pattern>/IndexAlumno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AgregarUsuario</servlet-name>
+        <url-pattern>/AgregarUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdministrarUsuario</servlet-name>
+        <url-pattern>/AdministrarUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargarUsuario</servlet-name>
+        <url-pattern>/CargarUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditarUsuario</servlet-name>
+        <url-pattern>/EditarUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarUsuario</servlet-name>
+        <url-pattern>/EliminarUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CambiarContrasenia</servlet-name>
+        <url-pattern>/CambiarContrasenia</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AvanzarSemestre</servlet-name>
+        <url-pattern>/AvanzarSemestre</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RetrocederSemestre</servlet-name>
+        <url-pattern>/RetrocederSemestre</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListaContesto</servlet-name>
+        <url-pattern>/ListaContesto</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

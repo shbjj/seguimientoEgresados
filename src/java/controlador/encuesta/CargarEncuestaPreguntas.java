@@ -7,7 +7,7 @@ package controlador.encuesta;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Pregunta;
-import modelo.Respuesta;
+//import modelo.Respuesta;
 
 /**
  *
@@ -51,7 +51,7 @@ public class CargarEncuestaPreguntas extends HttpServlet {
 
 
             //Mandar a llamar al JSP que mostrara las preguntas y/o respuestas
-            request.getRequestDispatcher("editarEncuesta.jsp").forward(request, response);
+            request.getRequestDispatcher("Encuesta/editar.jsp").forward(request, response);
         } catch (ClassNotFoundException | SQLException ex) {
             request.setAttribute("NOMBRE_MENSAJE", "Error");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
@@ -68,8 +68,11 @@ public class CargarEncuestaPreguntas extends HttpServlet {
         //Este metodo obtendra la información de la encuesta y la mandara al JSP
 
         //Direccion, puerto, nombre de BD, usuario y contraseña
-          Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
-       Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());
+        Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
+        Connection conexion = DriverManager.getConnection(
+                datos_conexion.getDireccion(), 
+                datos_conexion.getUsuario(), 
+                datos_conexion.getContrasenia());
 
     //Connection conexion = DriverManager.getConnection("jdbc:postgresql://45.33.125.66:5432/prepa_seis_v1", "postgres", "Adgjmptw1797@1");
 
@@ -96,6 +99,11 @@ public class CargarEncuestaPreguntas extends HttpServlet {
             request.setAttribute("FECHA", fecha);
             request.setAttribute("CLAVE", clave);
         }
+        
+        //Cerrar conexion
+          conexion.close();
+          rs.close();
+          st.close();
     }
 
     private void getPreguntas(HttpServletRequest request, int idEncuesta) throws SQLException {
@@ -167,6 +175,11 @@ public class CargarEncuestaPreguntas extends HttpServlet {
             //Incrementar contador
             c++;
         }
+        
+        //Cerrar conexion
+          conexion.close();
+          rs.close();
+          st.close();
         //Enviamos el arreglo al JSP
         request.setAttribute("PREGUNTAS", preguntas);
 
@@ -198,6 +211,11 @@ public class CargarEncuestaPreguntas extends HttpServlet {
         }
         
         cantPreguntas=temp;//variable global para el num de preguntas
+        
+        //Cerrar conexion
+          conexion.close();
+          rs.close();
+          st.close();
         return temp;
     }
    

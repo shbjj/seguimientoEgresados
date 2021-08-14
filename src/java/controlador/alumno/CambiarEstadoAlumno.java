@@ -7,7 +7,7 @@ package controlador.alumno;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -52,7 +52,7 @@ public class CambiarEstadoAlumno extends HttpServlet {
             request.setAttribute("DIRECCIONBOTON", "AdministrarAlumno");
             request.getRequestDispatcher("mensaje.jsp").forward(request, response);
             
-        } 
+            } 
         }
         
             //Redireccionar a AdministrarEncuesta
@@ -81,6 +81,10 @@ public class CambiarEstadoAlumno extends HttpServlet {
             //Ejecutar el Query
             Statement st = conexion.createStatement();
             st.executeUpdate(query);
+            
+            //Cerrar conexion
+            conexion.close();
+            st.close();
     }
     
     private String getEstado(String matricula) throws SQLException {
@@ -106,6 +110,10 @@ public class CambiarEstadoAlumno extends HttpServlet {
             //Obtener los valores
             temp = rs.getString(1).trim();
         }
+        //Cerrar conexion
+          conexion.close();
+          rs.close();
+          st.close();
         
         return temp;
     }

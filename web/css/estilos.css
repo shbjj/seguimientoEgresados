@@ -14,10 +14,33 @@
     --color-verde-1: #8EA368;
     --color-verde-2: #E2F0C9;
     
+       
+    --color-a1: #2196f3;
+    --color-a2: #6eb8f5;
+    --color-a3: #9acef8;
+    --color-a4: #c3e3fd;
+    --color-a5: #e8f5ff;
+
 
 }
 
+.alu-nombre
+{
+    color: var(--color-a2);
+}
 
+.alu-titulo
+{
+    color: var(--color-a1);
+}
+.alu-header
+{
+    background-color: var(--color-a3);
+}
+.alu-fondo
+{
+    background-color: var(--color-a5);
+}
 .barra-card-enc
 {
     background-color: var(--color-morado-3-1);
@@ -35,6 +58,7 @@
 {
     
     font-weight: bold;
+    color: var(--color-gris-1);
 }
 
 .barra-card-preg
@@ -76,3 +100,5 @@
 {
     color: white;
 }
+
+

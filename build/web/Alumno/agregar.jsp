@@ -4,6 +4,8 @@
     Author     : hbdye
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
@@ -39,8 +41,15 @@ and open the template in the editor.
     </head>
   <body>
     <div class="container">
+        <%
+        //Obtener año actual
+        Date date = new Date();
+        SimpleDateFormat getYearFormat = new SimpleDateFormat("yyyy");
+        String year = getYearFormat.format(date);
+        %>
+      <%@ include file = "../navbar.jsp" %>
       <div class="card mt-3">
-        <h5 class="card-header font-white barra-card-preg">Agregar alumno</h5>
+        <h5 class="card-header font-white barra-card-enc">Agregar alumno</h5>
         <div class="card-body body-card-preg">
           <h5 class="card-title font-titulo-enc">
             Ingrese los siguientes datos, por favor.
@@ -128,12 +137,12 @@ and open the template in the editor.
               <label for="validationSexo" class="form-label">Sexo</label>
               <select class="form-select" id="validationSexo" name="sexo" required>
                 <option selected disabled value="">Eliga una opción...</option>
-                <option value="m" >Mujer</option>
-                <option value="h">Hombre</option>
+                <option value="F" >Mujer</option>
+                <option value="M">Hombre</option>
               </select>
               <div class="invalid-feedback">Seleccione una opción válida.</div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <label for="validationCustom04" class="form-label">Estado</label>
               <select class="form-select" id="validationCustom04" name="estado">
                 <option value="Aguascalientes">Aguascalientes</option>
@@ -173,23 +182,52 @@ and open the template in the editor.
                 Seleccione un estado válido.
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-2">
               <label for="validationMun" class="form-label">Municipio</label>
               <input type="text" class="form-control" name="municipio" id="validationMun" pattern="[a-zA-Zá-úÁ-Ú ]+"
-              maxlength="39"/>
+              maxlength="39"
+              value=""/>
               <div class="invalid-feedback">
                 Ingrese un municipio válido.
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <label for="validationCP" class="form-label">C.P.</label>
               <input type="text" class="form-control" name="cp" id="validationCP" 
-              pattern="[0-9]{5}" maxlength="5"/>
+              pattern="[0-9]{5}" maxlength="5"value="62770"/>
               <div class="invalid-feedback">
                 Ingrese un código postal válido.
               </div>
             </div>
 
+            <div class="col-md-2">
+              <label for="validationTel" class="form-label">Teléfono</label>
+              <input
+                type="text"
+                class="form-control"
+                name="telefono" 
+                id="validationTel"
+                pattern="[0-9]{10}"
+                maxlength="10"
+              />
+              <div class="invalid-feedback">
+                Ingrese un número telefónico a diez digitos.
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <label for="validationCorreo" class="form-label">Correo electrónico</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email" 
+                id="validationCorreo"
+              />
+              <div class="invalid-feedback">
+                Ingrese un correo válido.
+              </div>
+            </div>
+            
             <div class="col-md-4">
               <label for="validationMat" class="form-label">Matricula</label>
               <input
@@ -224,6 +262,7 @@ and open the template in the editor.
                 id="validationSem"
                 pattern="[0-9]+"
                 maxlength="2"
+                value="1"
                 required
               />
               <div class="invalid-feedback">
@@ -232,10 +271,10 @@ and open the template in the editor.
             </div>
             <div class="col-md-2">
               <label for="validationGrupo" class="form-label">Grupo</label>
-              <input type="text" class="form-control" name="grupo" id="validationGrupo" pattern="[A-Z]"
+              <input type="text" class="form-control" name="grupo" id="validationGrupo" pattern="[A-Za-z]"
               maxlength="1"/>
               <div class="invalid-feedback">
-                Por favor, ingrese un grupo válido (Mayúsculas).
+                Por favor, ingrese un grupo válido .
               </div>
             </div>
 
@@ -248,6 +287,7 @@ and open the template in the editor.
                 class="form-control"
                 name="carrera" 
                 id="validationNameCarrera" pattern="[a-zA-Zá-úÁ-Ú ]+"
+                value="CARRERA DE TECNICO EN INFORMATICA CON BACHILLERATO BIVALENTE"
                 maxlength="145"
               />
               <div class="invalid-feedback">
@@ -258,8 +298,9 @@ and open the template in the editor.
               <label for="validationPlanest" class="form-label"
                 >Plan estudiantil</label
               >
-              <input type="text" name="plan" class="form-control" id="validationPlanest" pattern="[a-zA-Zá-úÁ-Ú0-9 ]+"
-              maxlength="9"/>
+              <input type="text" name="plan" class="form-control" id="validationPlanest" pattern="[a-zA-Zá-úÁ-Ú0-9 -]+"
+                     maxlength="9"
+                     value="2014-R1"/>
               <div class="invalid-feedback">
                 Por favor, ingrese un plan válido.
               </div>
@@ -274,7 +315,8 @@ and open the template in the editor.
                 class="form-control"
                 name="generacion" 
                 id="validationGeneracion"
-                pattern="[a-zA-Zá-úÁ-Ú0-9 ]+"
+                pattern="[a-zA-Zá-úÁ-Ú0-9 ]+" 
+                value="AGO<%=year%>"
               maxlength="9"
               />
               <div class="invalid-feedback">
