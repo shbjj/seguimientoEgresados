@@ -41,7 +41,8 @@ public class EditarAlumno extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
-        response.setContentType("text/html");
+        //response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
         out = response.getWriter();
 
         //Objeto para convertir una cadena a UTF-8
@@ -150,7 +151,7 @@ public class EditarAlumno extends HttpServlet {
                 st.setString(6,plan.toUpperCase());
                 st.setString(7,generacion.toUpperCase());
                 st.setString(8,grupo.toUpperCase());
-                st.setString(9,semestre);
+                st.setInt(9,Integer.parseInt(semestre));
                 st.setDate(10,fechaNac);
                 st.setString(11,curp.toUpperCase());
                 st.setString(12,sexo);

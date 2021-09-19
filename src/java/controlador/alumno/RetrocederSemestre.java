@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -51,33 +50,56 @@ public class RetrocederSemestre extends HttpServlet {
                  int rol = Integer.parseInt((String) session.getAttribute("ROL"));//Obtener el rol del usuario
                  if(rol==0 || rol==1)//Si es SuperAdministrador o Administrador, entonces puede modificar alumnos
                  {
+                     Connection conexion = null;
                      try {
                         Class.forName("org.postgresql.Driver");
-
-                        //Obtener todos los alumnos que esten inscritos (no sean egresados)
-                         obtenerAlumnos();
-                         
-                         //Recorrer el ArrayList e ir cambiando los datos
-                         Iterator <Alumno> alumnosIterator=alumnos.iterator();
-                         Alumno alumno=null;
-                         while(alumnosIterator.hasNext())
-                         {
-                             alumno=alumnosIterator.next();
-                             modificarSemestre(alumno);
-                         }
+                        //Direccion, puerto, nombre de BD, usuario y contraseña
+                        Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
+                        
+                        conexion = DriverManager.getConnection(
+                                    datos_conexion.getDireccion(),
+                                    datos_conexion.getUsuario(),
+                                    datos_conexion.getContrasenia());
+                        conexion.setAutoCommit(false);//Definir que se ocuparan transacciones
+                        //Disminuir el nivel de semestre de todos los alumnos de 2do semestre en adelante
+                        actualizar(conexion, "UPDATE alumnos "
+                                    + "SET semestre=(semestre-1) "
+                                    + "WHERE semestre>1 and status='INSCRITO'");
                          
                          //Borrar la ultima fecha en la que se avanzo el semestre, ya que con esta accion se borrara lo que se hizo al avanzar
-                         borrarFecha();
+                         borrarFecha(conexion);
+                         //Hacer commit
+                            conexion.commit();
+                            //Cerrar conexion
+                            conexion.close();
                          //Redireccionar a AdministrarAlumno
                         response.sendRedirect(request.getContextPath() + "/AdministrarAlumno");
                          
-                     } catch (ClassNotFoundException ex) {
+                     } catch (ClassNotFoundException | SQLException ex) {
                          //Logger.getLogger(AvanzarSemestre.class.getName()).log(Level.SEVERE, null, ex);
-                         out.print("<br>ERORR: "+ex);
-                     } catch (SQLException ex) {
-                         //Logger.getLogger(AvanzarSemestre.class.getName()).log(Level.SEVERE, null, ex);
-                         out.print("<br>ERORR: "+ex);
+                         if (conexion != null) {
+                                try {
+                                    //Deshacer los errores
+                                    conexion.rollback();
+                                    conexion.close();
+                                } catch (SQLException ex2) {
+                                    request.setAttribute("NOMBRE_MENSAJE", "Error");
+                                    request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
+                                    request.setAttribute("DESCRIPCION", ex2.toString());
+                                    request.setAttribute("MENSAJEBOTON", "Volver");
+                                    request.setAttribute("DIRECCIONBOTON", "index.jsp");
+                                    request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
+                                }
+                            }
+                         request.setAttribute("NOMBRE_MENSAJE", "Error");
+                        request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
+                        request.setAttribute("DESCRIPCION", ex.toString());
+                        request.setAttribute("MENSAJEBOTON", "Volver");
+                        request.setAttribute("DIRECCIONBOTON", "index.jsp");
+                        request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
                      }
+                     //Logger.getLogger(AvanzarSemestre.class.getName()).log(Level.SEVERE, null, ex);
+                     
                  }
                  else//Si no, no tiene permiso
                  {
@@ -106,91 +128,26 @@ public class RetrocederSemestre extends HttpServlet {
          }
      }
      
-     void obtenerAlumnos() throws ClassNotFoundException, SQLException
+     void actualizar(Connection conexion, String query) throws SQLException {
+        PreparedStatement st = null;
+        
+        st = conexion.prepareStatement(query);
+        
+        //Ejecutar accion
+        st.executeUpdate();
+        //Cerrar Statement
+        st.close();
+    }
+     void borrarFecha(Connection conexion) throws ClassNotFoundException, SQLException
      {
-          
-                //Direccion, puerto, nombre de BD, usuario y contraseña
-                Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
-                Connection conexion = DriverManager.getConnection(
-                        datos_conexion.getDireccion(), 
-                        datos_conexion.getUsuario(), 
-                        datos_conexion.getContrasenia());
-          //Obtener el num_control y semestre de los alumnos inscritos      
-          String query = "SELECT num_control, semestre "
-                  + "FROM alumnos "
-                  + "WHERE status='INSCRITO'";
-          out.print("<br> Query de busqueda: "+query);
-          PreparedStatement st = null;
-          ResultSet rs = null;
-          st = conexion.prepareStatement(query);
-          rs = st.executeQuery();
-          Alumno alumno=null;//Alumno temporal
-          while (rs.next()) {
-              //Instanciar un nuevo alumno
-              alumno=new Alumno();
-              //Agregarle los valores
-              alumno.setMatricula(String.valueOf(rs.getInt(1)));//Obtener la matricula
-              alumno.setSemestre(rs.getString(2).trim());//Obtener el semestre
-              //Agregar el alumno al Array
-              alumnos.add(alumno);
-          }
-          
-          //Cerrar conexion
-          conexion.close();
-          rs.close();
-          st.close();
-     }
-     
-     void modificarSemestre(Alumno alumno) throws ClassNotFoundException, SQLException
-     {
-        //Obtener el valor numerico del semestre del alumno
-         int semestre = Integer.parseInt(alumno.getSemestre());
-         //AUMENTAR VALOR DEL SEMESTRE
-         if (semestre > 1)//Si el semestre es mayor a 1, se disminuye el valor, si no, entonces no hacer nada
-         {
-             //Direccion, puerto, nombre de BD, usuario y contraseña
-             Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
-             Connection conexion = DriverManager.getConnection(
-                     datos_conexion.getDireccion(),
-                     datos_conexion.getUsuario(),
-                     datos_conexion.getContrasenia());
-             String query;//Query de modificacion
-             PreparedStatement st = null;
-
-             semestre--;//Disminuir semestre
-             query = "UPDATE alumnos "
-                     + "SET semestre=? "
-                     + "WHERE num_control=?";
-             out.print("<br> Query de actualizacion: " + query);
-             st = conexion.prepareStatement(query);
-             //Agregar valor del semestre
-             st.setString(1, String.valueOf(semestre));//Semestre
-             st.setInt(2, Integer.parseInt(alumno.getMatricula()));//Matricula
-             //Ejecutar accion
-             st.executeUpdate();
-             //Cerrar conexion
-             st.close();
-             conexion.close();
-         }
-     }
-     
-     void borrarFecha() throws ClassNotFoundException, SQLException
-     {
-         //Direccion, puerto, nombre de BD, usuario y contraseña
-         Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
-         Connection conexion = DriverManager.getConnection(
-                 datos_conexion.getDireccion(),
-                 datos_conexion.getUsuario(),
-                 datos_conexion.getContrasenia());
          Statement st = null;
          //Borrar la ultima fecha en la que se avanzo el semestre
          String query = "delete from avance_semestre where fecha=(select max(fecha) from avance_semestre);";
          st = conexion.createStatement();
          //Ejecutar accion
          st.executeUpdate(query);
-         //Cerrar conexion
+         //Cerrar Statement
          st.close();
-         conexion.close();
          
      }
 }

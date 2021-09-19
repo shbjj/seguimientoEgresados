@@ -129,7 +129,7 @@ public class AgregarAlumno extends HttpServlet {
                 st.setString(7,plan.toUpperCase());
                 st.setString(8,generacion.toUpperCase());
                 st.setString(9,grupo.toUpperCase());
-                st.setString(10,semestre.toUpperCase());
+                st.setInt(10,Integer.parseInt(semestre));
                 st.setDate(11,fechaNac);
                 st.setString(12,curp.toUpperCase());
                 st.setString(13,sexo);

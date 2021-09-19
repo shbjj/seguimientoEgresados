@@ -10,7 +10,9 @@
     Author     : hbdye
 --%>
 
-
+<%
+    String estatusNav = (String) session.getAttribute("ESTATUS");//Obtener el tipo de usuario (1 es alumno)
+%>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.jsp">Inicio</a>
@@ -25,8 +27,9 @@
                         Talleres
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Talleres disponibles</a></li>
-                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/#">Talleres cursados</a></li>
+                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/index.jsp">Talleres cursando</a></li>
+                        <li><a class="dropdown-item" href="TalleresDisponibles">Talleres disponibles</a></li>
+                        
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="<%=request.getContextPath()%>/#">Historial</a></li>
                     </ul>
@@ -39,7 +42,7 @@
             </ul>
             <ul class="navbar-nav ">
                 <li class="nav-item">
-                    <span class="nav-link fw-bold" ><%=nombre%></span>
+                    <span class="nav-link fw-bold" ><%=nombre%> [<%=estatusNav%>]</span>
                 </li>
             </ul>
             <ul class="navbar-nav ">

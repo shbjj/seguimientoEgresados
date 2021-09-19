@@ -38,22 +38,22 @@ and open the template in the editor.
         <link rel="stylesheet" href="css/estilos.css" />
         <title>Index</title>
     </head>
-  <body>
-<%
-    Encuesta[] encuestasNoContestadas=(Encuesta[])request.getAttribute("ENCUESTASNOCONTESTADAS");
-    Encuesta[] encuestasContestadas=(Encuesta[])request.getAttribute("ENCUESTASCONTESTADAS");
-    
-    String tipo = (String) session.getAttribute("TIPO");//Obtener el tipo de usuario (1 es alumno)
-    if (tipo != null)//Si el tipo de usuario es diferente de Nulo (o sea, si se inicio sesion)
-    {
-        if (tipo.compareTo("1") == 0)//Si el tipo de usuario es Alumno
-        {
-            //Obtener datos de la sesión
-            String nombre = (String) session.getAttribute("NOMBRE");
-            String matricula = (String) session.getAttribute("MATRICULA");
-%>
+    <body>
+        <%
+            Encuesta[] encuestasNoContestadas = (Encuesta[]) request.getAttribute("ENCUESTASNOCONTESTADAS");
+            Encuesta[] encuestasContestadas = (Encuesta[]) request.getAttribute("ENCUESTASCONTESTADAS");
 
-    
+            String tipo = (String) session.getAttribute("TIPO");//Obtener el tipo de usuario (1 es alumno)
+            if (tipo != null)//Si el tipo de usuario es diferente de Nulo (o sea, si se inicio sesion)
+            {
+                if (tipo.compareTo("1") == 0)//Si el tipo de usuario es Alumno
+                {
+                    //Obtener datos de la sesión
+                    String nombre = (String) session.getAttribute("NOMBRE");
+                    String matricula = (String) session.getAttribute("MATRICULA");
+        %>
+
+
 
         <div class="container">
             <%@ include file = "navbar.jsp" %>
@@ -73,40 +73,39 @@ and open the template in the editor.
                     </a>
                 </div>
             </div>
-            <p class="fs-3 alu-titulo md-5">Talleres</p>
-            
+            <p class="fs-3 alu-titulo md-5">Talleres cursando</p>
+
             <!--
                 Aqui ira todo lo de talleres unu
             -->
             <p class="fs-3 alu-titulo mt-md-5">Encuestas</p>
             <!--Tabla de las encuestas-->
-            <div class="table-responsive-md">
-                <table class="table table-striped table-hover">
-                    <thead class="alu-header text-white">
-                        <tr>
-                            <th scope="col" class="col-7">Nombre</th>
-                            <th scope="col" class="col-1 text-center">Fecha</th>
-                            <th scope="col" class="col-1 text-center">Contestada</th>
-                            <th scope="col" class="col-1 text-center">Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                        if(encuestasNoContestadas==null && encuestasContestadas==null) //Si no hay encuestas
-                        { %>
+            <div style="height:225px;overflow:auto;">
+                <div class="table-responsive-md">
+                    <table class="table table-striped table-hover">
+                        <thead class="alu-header text-white">
                             <tr>
-                            <th scope="row" colspan="4" class="text-center">
-                                No hay ninguna encuesta disponible.
-                            </th>
-                        </tr>
-                        <% }
-                        else
-                        {   
-                            if(encuestasNoContestadas!=null)//Si si hay encuestas
-                            {
+                                <th scope="col" class="col-7">Nombre</th>
+                                <th scope="col" class="col-1 text-center">Fecha</th>
+                                <th scope="col" class="col-1 text-center">Contestada</th>
+                                <th scope="col" class="col-1 text-center">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                            if (encuestasNoContestadas == null && encuestasContestadas == null) //Si no hay encuestas
+                            { %>
+                            <tr>
+                                <th scope="row" colspan="4" class="text-center">
+                                    No hay ninguna encuesta disponible.
+                                </th>
+                            </tr>
+                            <% } else {
+                                if (encuestasNoContestadas != null)//Si si hay encuestas
+                                {
 
-                                for(int encuesta=0; encuesta<encuestasNoContestadas.length; encuesta++)//Recorrer el arreglo de encuestas no contestadas
-                                { %>
+                                    for (int encuesta = 0; encuesta < encuestasNoContestadas.length; encuesta++)//Recorrer el arreglo de encuestas no contestadas
+                                    {%>
                             <tr>
                                 <th scope="row">
                                     <%=encuestasNoContestadas[encuesta].getNombre()%>
@@ -129,13 +128,13 @@ and open the template in the editor.
                                     </div>
                                 </td>
                             </tr>
-                                <% }
-                            }//Fin del if
-                            if(encuestasContestadas!=null)//Si si hay encuestas
-                            {
+                            <% }
+                                }//Fin del if
+                                if (encuestasContestadas != null)//Si si hay encuestas
+                                {
 
-                                for(int encuesta=0; encuesta<encuestasContestadas.length; encuesta++)//Recorrer el arreglo de encuestas no contestadas
-                                { %>
+                                    for (int encuesta = 0; encuesta < encuestasContestadas.length; encuesta++)//Recorrer el arreglo de encuestas no contestadas
+                                        {%>
                             <tr>
                                 <th scope="row">
                                     <%=encuestasContestadas[encuesta].getNombre()%>
@@ -158,39 +157,39 @@ and open the template in the editor.
                                     </div>
                                 </td>
                             </tr>
-                                <% }
-                            }//Fin del if
-                            
-                        }
-                        %>
-                        
-                        
+                            <% }
+                                    }//Fin del if
 
-                        
+                                }
+                            %>
 
-                    </tbody>
-                </table>
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
 
 
         </div>
 
 
-       
 
 
-<%
-        } else//La sesión activa no es de un alumno
-        {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");//Redireccionar
-        }
-    } else//No se ha iniciado sesión
-    {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");//Redireccionar
-    }
-%>
- <!-- Scrips -->
+
+        <%
+                } else//La sesión activa no es de un alumno
+                {
+                    response.sendRedirect(request.getContextPath() + "/login.jsp");//Redireccionar
+                }
+            } else//No se ha iniciado sesión
+            {
+                response.sendRedirect(request.getContextPath() + "/login.jsp");//Redireccionar
+            }
+        %>
+        <!-- Scrips -->
 
 
         <!-- Optional JavaScript; choose one of the two! -->

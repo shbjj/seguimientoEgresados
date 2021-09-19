@@ -120,6 +120,38 @@
         <servlet-name>ListaContesto</servlet-name>
         <servlet-class>controlador.encuesta.ListaContesto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AgregarTaller</servlet-name>
+        <servlet-class>controlador.taller.AgregarTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdministrarTaller</servlet-name>
+        <servlet-class>controlador.taller.AdministrarTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerTaller</servlet-name>
+        <servlet-class>controlador.taller.VerTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CargarDetallesTaller</servlet-name>
+        <servlet-class>controlador.taller.CargarDetallesTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditarTaller</servlet-name>
+        <servlet-class>controlador.taller.EditarTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarTaller</servlet-name>
+        <servlet-class>controlador.taller.EliminarTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TalleresDisponibles</servlet-name>
+        <servlet-class>controlador.taller.TalleresDisponibles</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InscribirTaller</servlet-name>
+        <servlet-class>controlador.taller.InscribirTaller</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CrearEncuesta</servlet-name>
         <url-pattern>/CrearEncuesta</url-pattern>
@@ -239,6 +271,38 @@
     <servlet-mapping>
         <servlet-name>ListaContesto</servlet-name>
         <url-pattern>/ListaContesto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AgregarTaller</servlet-name>
+        <url-pattern>/AgregarTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdministrarTaller</servlet-name>
+        <url-pattern>/AdministrarTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerTaller</servlet-name>
+        <url-pattern>/VerTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CargarDetallesTaller</servlet-name>
+        <url-pattern>/CargarDetallesTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditarTaller</servlet-name>
+        <url-pattern>/EditarTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EliminarTaller</servlet-name>
+        <url-pattern>/EliminarTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TalleresDisponibles</servlet-name>
+        <url-pattern>/TalleresDisponibles</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InscribirTaller</servlet-name>
+        <url-pattern>/InscribirTaller</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

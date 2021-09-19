@@ -32,8 +32,8 @@ public class IniciarSesion extends HttpServlet {
          out = response.getWriter();
          ConvertirUTF8 convert=new ConvertirUTF8();
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
-        /*response.setContentType("text/html");
-        PrintWriter out = response.getWriter();*/
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         //Verificar que no haya una sesion activa
         HttpSession session=request.getSession(true);
         String tipo=(String)session.getAttribute("TIPO");
@@ -41,7 +41,7 @@ public class IniciarSesion extends HttpServlet {
         if(tipo==null)//Si no hay una sesion activa
         {
             tipo = (String) request.getParameter("tipo");//Obtener el tipo de sesión desde el JSP
-            
+            out.print(tipo);
             //Strings temporales
             String st1="", st2="", query="";
             switch(tipo)//Dependiendo del tipo, realizar accion
@@ -50,7 +50,7 @@ public class IniciarSesion extends HttpServlet {
                     //Obtener datos
                     st1 =(String) request.getParameter("matricula");//Obtener la matricula
                     st1=convert.convertToUTF8(st1);//Covertir a UTF-8
-                    query="SELECT num_control, nombre, app, apm "
+                    query="SELECT num_control, nombre, app, apm, status "
                             + "FROM alumnos "
                             + "WHERE num_control=? or curp=?";
                     break;
@@ -63,6 +63,7 @@ public class IniciarSesion extends HttpServlet {
                     query="SELECT nombre, rol "
                             + "FROM administradores "
                             + "WHERE nombre=? and contrasenia=md5(?)";
+                    out.print(query);
                     break;
                 case "3"://Empleador
                     //Obtener datos
@@ -72,7 +73,7 @@ public class IniciarSesion extends HttpServlet {
                     query="SELECT id_encuestas "
                             + "FROM encuestas "
                             + "WHERE clave=? and habilitada='s'";
-                    out.print("<br>"+"Query");
+                    
                     break;
             }
              try {
@@ -99,12 +100,21 @@ public class IniciarSesion extends HttpServlet {
         ResultSet rs = null;
         stmt = conexion.prepareStatement(query);
         out.print("<br>"+"Consuta");
+        out.print("<br>"+query);
         switch(tipo)
         {
             case "1"://Egresado
                     //Agregar datos al query
-                    stmt.setInt(1,Integer.parseInt(st1));//Matricula
-                    stmt.setString(2,st1);//o curp
+                    if(st1.length()>8)
+                    {
+                        stmt.setInt(1,-1);//Matricula
+                        stmt.setString(2,st1);//o curp
+                    }
+                    else
+                    {
+                        stmt.setInt(1,Integer.parseInt(st1));//Matricula
+                        stmt.setString(2,"");//o curp
+                    }
                     out.print("<br>"+"Agregado");
                     break;
                 case "2"://Administrador
@@ -134,6 +144,8 @@ public class IniciarSesion extends HttpServlet {
                     session.setAttribute("TIPO",String.valueOf(tipo));
                     session.setAttribute("MATRICULA",st1);
                     session.setAttribute("NOMBRE",st2);
+                    session.setAttribute("ESTATUS",rs.getString(5).trim());
+                    out.print("<br>"+rs.getString(5).trim());
                     //Redireccionar al index
                     //response.sendRedirect(request.getContextPath() + "/index.jsp");
                         break;

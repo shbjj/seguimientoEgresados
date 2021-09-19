@@ -91,7 +91,7 @@ public class ContestarEncuesta extends HttpServlet {
         request.setAttribute("SUB_NOMBRE_MENSAJE", sub_mens);
         request.setAttribute("DESCRIPCION", descripcion);
         request.setAttribute("MENSAJEBOTON", mens_boton);
-        request.setAttribute("DIRECCIONBOTON", "/"+direccion_mens);
+        request.setAttribute("DIRECCIONBOTON", direccion_mens);
         request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
     }
     void egresado(HttpServletRequest request, HttpServletResponse response, int idEncuesta, int cantPreguntas, boolean contestada, int numControl) throws ServletException, IOException {

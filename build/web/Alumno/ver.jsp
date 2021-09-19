@@ -44,11 +44,11 @@
             { 
             String nombre=(String)session.getAttribute("NOMBRE");//Obtener el nombre
             %>
-                <%@ include file = "navbar.jsp" %>
+                <%@ include file = "/Alumno/navbar.jsp" %>
             <% }
             else
             { %>
-            <%@ include file = "../navbar.jsp" %>
+            <%@ include file = "/navbar.jsp" %>
             <% }%>
         
       <div class="row">

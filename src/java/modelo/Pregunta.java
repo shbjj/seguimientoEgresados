@@ -11,7 +11,7 @@ package modelo;
  */
 public class Pregunta {
     //Tamaño de campos de las preguntas
-    public int tamPregunta=400, opc=150;
+    final public short tamPregunta=400, opc=150;
     //Datos unicos de las preguntas
     private int id_encuestas, id_preguntas;
     private String pregunta, tipo, obligatoria;

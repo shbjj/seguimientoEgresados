@@ -42,8 +42,8 @@
                     <div class="card-text">
                         <form action="<%=request.getContextPath()%>/CrearEncuesta" method="POST">
                             <div class="mb-2 form-floating">
-                                <input type="text" class="form-control" name="nombre" id="exampleFormControlInput1" 
-                                       placeholder="Nombre de la encusta" maxlength="<%=tamanio.tamNombre%> " required>
+                                <textarea class="form-control" name="nombre" id="exampleFormControlInput1" 
+                                          placeholder="Nombre de la encusta" maxlength="<%=tamanio.tamNombre%> " required></textarea>
                                 <label for="exampleFormControlInput1" class="form-label">Nombre de la encuesta</label>
                             </div>
 

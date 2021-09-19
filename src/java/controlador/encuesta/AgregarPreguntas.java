@@ -117,6 +117,8 @@ public class AgregarPreguntas extends HttpServlet {
             request.setAttribute("NOMBRE_MENSAJE", "Hecho");
             request.setAttribute("SUB_NOMBRE_MENSAJE", "¡Preguntas guardadas exitosamente!");
             request.setAttribute("DESCRIPCION", "Las preguntas de la encuesta se han guardado, estan listas para poder ser contestadas.");
+            request.setAttribute("MENSAJEBOTON", "Regresar");
+            request.setAttribute("DIRECCIONBOTON", "AdministrarEncuesta");
             request.getRequestDispatcher("mensaje.jsp").forward(request, response);
             
             

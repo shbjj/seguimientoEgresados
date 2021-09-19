@@ -105,7 +105,7 @@ public class GraficosEncuesta extends HttpServlet {
                         request.setAttribute("RESPUESTAS", respuestas);
 
                         //Mandar a llamar al JSP que mostrara los graficos
-                        request.getRequestDispatcher("Encuesta/graficos.jsp").forward(request, response);
+                        request.getRequestDispatcher("Encuesta/graficos_1.jsp").forward(request, response);
                     } catch (ClassNotFoundException | SQLException ex) {
 
                         error(request, response, "Error al buscar en la base de datos:<br>" + ex);//Enviar a mensaje de error

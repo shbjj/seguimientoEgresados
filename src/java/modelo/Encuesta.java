@@ -10,7 +10,7 @@ package modelo;
  * @author hbdye
  */
 public class Encuesta {
-    public int tamNombre=150, tamClave=6, tamOtros=500;
+    public short tamNombre=150, tamClave=6, tamOtros=500;
     private String id_encuestas,
             nombre,
             descripcion,
@@ -27,7 +27,7 @@ public class Encuesta {
         return tamNombre;
     }
 
-    public void setTamNombre(int tamNombre) {
+    public void setTamNombre(short tamNombre) {
         this.tamNombre = tamNombre;
     }
 
@@ -35,7 +35,7 @@ public class Encuesta {
         return tamClave;
     }
 
-    public void setTamClave(int tamClave) {
+    public void setTamClave(short tamClave) {
         this.tamClave = tamClave;
     }
 
@@ -43,7 +43,7 @@ public class Encuesta {
         return tamOtros;
     }
 
-    public void setTamOtros(int tamOtros) {
+    public void setTamOtros(short tamOtros) {
         this.tamOtros = tamOtros;
     }
 

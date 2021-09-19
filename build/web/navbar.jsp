@@ -52,9 +52,9 @@
                         Talleres
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/AdministrarEncuesta">Administrar talleres</a></li>
+                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/AdministrarTaller">Administrar talleres</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/crearEncuesta.jsp">Agregar taller</a></li>
+                        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/Taller/agregar.jsp">Agregar taller</a></li>
                     </ul>
                 </li>
                 <% } %>

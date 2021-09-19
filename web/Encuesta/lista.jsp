@@ -21,7 +21,7 @@ String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion
                  {  
                  String tipoLista=(String)request.getAttribute("TIPOLISTA");
                  Encuesta encuesta=(Encuesta)request.getAttribute("ENCUESTA");
-                 ArrayList<Alumno> alumnos =(ArrayList<Alumno>)request.getAttribute("ALUMNOS");
+                 Object[] alumnos =(Object[])request.getAttribute("ALUMNOS");
                  if(tipoLista.compareTo("1")==0)
                  {//Si el tipo de lista es de alumnos que si han respondido la encuesta
                      tipoLista="Alumnos que han respondido";
@@ -62,7 +62,7 @@ String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion
         
         <div class="container">
             <%@ include file = "../navbar.jsp" %>
-        
+            
             <p class="fs-3 font-titulo-enc mt-2"><%=tipoLista%></p>
             <!--
             Dettalles de la encuesta
@@ -103,7 +103,7 @@ String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion
                             </tr>
                         </thead>
                         <tbody>
-                            <% if (alumnos.isEmpty()) { %>
+                            <% if (alumnos.length==0) { %>
                             <tr>
                                 <th scope="row" colspan="5" class="text-center">
                                     No hay ningun valor.
@@ -111,12 +111,11 @@ String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion
                             </tr>
                             <% } else {
                                 //Recorrer el ArrayList e ir cambiando los datos
-                                Iterator <Alumno> alumnosIterator=alumnos.iterator();
-                                Alumno alumno=null;
-                                int cont=1;
-                                while(alumnosIterator.hasNext())
+                                
+                                Alumno alumno;
+                                for(int cont=0; cont<alumnos.length; cont++)
                                 {
-                                    alumno=alumnosIterator.next();
+                                    alumno=(Alumno)alumnos[cont];
                                 %>   
                             <tr>
                                 <th scope="row"><%=alumno.getMatricula()%>
@@ -156,8 +155,8 @@ String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion
                                 </td>
                             </tr>
 
-                            <% cont++; } 
-                            alumnosIterator=null;
+                            <% } 
+                            
                             }
                                 %>
                         </tbody>

@@ -12,7 +12,7 @@ package modelo;
 public class Respuesta {
 
     //Tamaño de los campos de las respuestas
-    public int tamOpcAbierta=600;
+    final public short tamOpcAbierta=600;
     //Datos unicos de las Respuestas
     private int id_encuestas, id_preguntas, num_control;
     private String date;
