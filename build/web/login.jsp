@@ -147,9 +147,9 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <a href="#" class="bi bi-question-lg" >
+                                    <!--<a href="#" class="bi bi-question-lg" >
                                         Olvide mi contraseña
-                                    </a>
+                                    </a>-->
                                   </p>
                                 </div>
                             </div>

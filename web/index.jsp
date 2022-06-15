@@ -24,8 +24,21 @@
                 case "1":
                     response.sendRedirect(request.getContextPath() + "/IndexAlumno");
                     break;
-                case "2":
-                    response.sendRedirect(request.getContextPath()+"/PanelDeAdmin"); 
+                case "2"://Es un administrador
+                    String rol=(String)session.getAttribute("ROL");
+                    switch(rol)
+                    {
+                        case "0" : case "1": case "4"://Superadministrador y administradores, y capturistas
+                            response.sendRedirect(request.getContextPath()+"/AdministrarAlumno"); 
+                        break;
+                        case "2"://Seguimiento de egresados
+                            response.sendRedirect(request.getContextPath()+"/AdministrarEncuesta"); 
+                        break;
+                        case "3"://Tallerista
+                            response.sendRedirect(request.getContextPath()+"/AdministrarTaller"); 
+                        break;
+                    }
+                    
                     break;
                 case "3":
                     response.sendRedirect(request.getContextPath()+"/CargarPreguntasRespuestas"); 

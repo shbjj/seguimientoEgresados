@@ -26,6 +26,8 @@ public class VerAlumno extends HttpServlet {
  
         public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String matricula = (String) request.getParameter("matricula");
         if(matricula!=null)//Si si hay un valor recibido
         {

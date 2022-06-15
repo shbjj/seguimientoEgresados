@@ -99,6 +99,7 @@ and open the template in the editor.
                 <option value="1">Administrador</option>
                 <option value="2">Seguimiento de egresados</option>
                 <option value="3">Talleres</option>
+                <option value="4">Capturador</option>
               </select>
               <div class="invalid-feedback">
                 Seleccione un rol válido.
@@ -190,6 +191,9 @@ and open the template in the editor.
                 </p>
                 <p>
                     <span class="fs-5 fw-bold font-titulo-enc">Talleres: </span>El usuario solo podra administrar talleres.
+                </p>
+                <p>
+                    <span class="fs-5 fw-bold font-titulo-enc">Capturador: </span>El usuario solo podra agregar, editar y eluminar alumnos.
                 </p>
                 
             </div>

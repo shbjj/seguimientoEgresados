@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelo.Alumno;
 
 /**
@@ -25,57 +26,93 @@ import modelo.Alumno;
  */
 public class AdministrarAlumno extends HttpServlet {
 
-    Alumno [] alumnos;
-    Alumno [] egresados;
+    Alumno[] alumnos;
+    Alumno[] egresados;
+
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            //Cargar el druver en la clase
-            Class.forName("org.postgresql.Driver");
-            
-            //Obtener los alumnos 
-                int c=getNumAlumnos("select count(*) from alumnos where status='INSCRITO';");
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession(true);
+        String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
 
-                //Arreglo donde se guardara la info
-                alumnos= new Alumno[c];
+        if (tipoS != null)//Si se inicio sesión
+        {
+            if (tipoS.compareTo("2") == 0) //Inicia sesión un admin
+            {
+                int rol = Integer.parseInt((String) session.getAttribute("ROL"));//Obtener el rol del usuario
+                if (rol == 0 || rol == 1 || rol == 4)//Si es SuperAdministrador, Administrador o capturista,
+                //entonces puede administrar alumnos
+                {
 
-                //Obtener la informacion de las encuestas para egresados (no tienen clave), y almacenarla en el arreglo
-                getAlumnos(alumnos,"select num_control, nombre, app, apm, semestre, grupo "
-                        + "from alumnos "
-                        + "where status='INSCRITO' "
-                        + "order by app;");
-                
-            //Obtener TODAS las encuestas
-                int c2=getNumAlumnos("select count(*) from alumnos where status !='INSCRITO';");
+                    try {
+                        //Cargar el druver en la clase
+                        Class.forName("org.postgresql.Driver");
 
-                //Arreglo donde se guardara la info
-                egresados= new Alumno[c2];
+                        //Obtener los alumnos 
+                        int c = getNumAlumnos("select count(*) from alumnos where status='INSCRITO';");
 
-                //Obtener la informacion de las encuestas para empleadores (tienen clave), y almacenarla en el arreglo
-                getAlumnos(egresados,"select num_control, nombre, app, apm, semestre, grupo "
-                        + "from alumnos "
-                        + "where status!='INSCRITO' "
-                        + "order by app;");
-                
-            //Obtener la fecha en la que se hizo el ultimo avance de semestre
-            String fechaAvance=getFechaAvanceSemestre();
-            request.setAttribute("FECHA_AVANCE_SEMESTRE", fechaAvance);//Enviar la fecha
-            
-            //Enviar los arreglos al JSP de PanelDeAdmin
-            
-            request.setAttribute("ALUMNOS", alumnos);
-            request.setAttribute("EGRESADOS", egresados);
-            request.getRequestDispatcher("Alumno/administrar.jsp").forward(request, response);
-            
-        } catch (ClassNotFoundException | SQLException ex) {
-            request.setAttribute("NOMBRE_MENSAJE", "Error");
-            request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
-            request.setAttribute("DESCRIPCION", "Error al obtener información de la base de datos:\n" + ex);
-            request.getRequestDispatcher("mensaje.jsp").forward(request, response);
-        } 
+                        //Arreglo donde se guardara la info
+                        alumnos = new Alumno[c];
 
-        
-        
+                        //Obtener la informacion de las encuestas para egresados (no tienen clave), y almacenarla en el arreglo
+                        getAlumnos(alumnos, "select num_control, nombre, app, apm, semestre, grupo "
+                                + "from alumnos "
+                                + "where status='INSCRITO' "
+                                + "order by app;");
+
+                        //Obtener TODAS las encuestas
+                        int c2 = getNumAlumnos("select count(*) from alumnos where status !='INSCRITO';");
+
+                        //Arreglo donde se guardara la info
+                        egresados = new Alumno[c2];
+
+                        //Obtener la informacion de las encuestas para empleadores (tienen clave), y almacenarla en el arreglo
+                        getAlumnos(egresados, "select num_control, nombre, app, apm, semestre, grupo "
+                                + "from alumnos "
+                                + "where status!='INSCRITO' "
+                                + "order by app;");
+
+                        //Obtener la fecha en la que se hizo el ultimo avance de semestre
+                        String fechaAvance = getFechaAvanceSemestre();
+                        request.setAttribute("FECHA_AVANCE_SEMESTRE", fechaAvance);//Enviar la fecha
+
+                        //Enviar los arreglos al JSP de PanelDeAdmin
+                        request.setAttribute("ALUMNOS", alumnos);
+                        request.setAttribute("EGRESADOS", egresados);
+                        request.getRequestDispatcher("Alumno/administrar.jsp").forward(request, response);
+
+                    } catch (ClassNotFoundException | SQLException ex) {
+                        request.setAttribute("NOMBRE_MENSAJE", "Error");
+                        request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
+                        request.setAttribute("DESCRIPCION", "Error al obtener información de la base de datos:\n" + ex);
+                        request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                    }
+
+                } else//Si no, no tiene permiso
+                {
+                    error("No tiene permiso para acceder a este contenido", request, response);
+                }
+
+            } else//Inicio sesión otra persona
+            {
+                error("No tiene permiso para acceder a este contenido", request, response);
+            }
+        } else//no hay una sesión iniciada
+        {
+            //Redirigir al login
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        }
+    }
+
+    void error(String mensaje, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute("NOMBRE_MENSAJE", "Error");
+        request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
+        request.setAttribute("DESCRIPCION", mensaje);
+        request.setAttribute("MENSAJEBOTON", "Volver");
+        request.setAttribute("DIRECCIONBOTON", "index.jsp");
+        request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
     }
 
     private int getNumAlumnos(String query) throws SQLException {//Este metodo retornara el numero de encuestas, se debe de recibir el query
@@ -92,81 +129,77 @@ public class AdministrarAlumno extends HttpServlet {
         rs.next();
         int c = rs.getInt(1);
         //Cerrar conexion
-          conexion.close();
-          rs.close();
-          st.close();
-          
+        conexion.close();
+        rs.close();
+        st.close();
+
         return c;
     }
-    
-    private Alumno[] getAlumnos(Alumno[] alumn, String query) throws SQLException
-    {//Este metodo retornara el id_encuesta y el nombre, se debe de recibir el arreglo donde se guardara la
+
+    private Alumno[] getAlumnos(Alumno[] alumn, String query) throws SQLException {//Este metodo retornara el id_encuesta y el nombre, se debe de recibir el arreglo donde se guardara la
         //informacion y el query
-            //Direccion, puerto, nombre de BD, usuario y contraseña
-        Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
-       Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());
-       
-            //Ejecutar el Query
-            Statement st = conexion.createStatement();
-            ResultSet rs = st.executeQuery(query);
-            int temp=0;
-            //Saber cuantos resultados hay
-            String tempString="";
-           while(rs.next())
-           {
-               //Obtener los valores
-               alumn[temp]= new Alumno();
-               alumn[temp].setMatricula(rs.getString(1).trim());
-               alumn[temp].setNombre(rs.getString(2).trim());
-               alumn[temp].setApp(rs.getString(3).trim());
-               tempString=rs.getString(4);
-               if(tempString==null)//Si el valor es nulo
-               {
-                   tempString="";
-               }
-               alumn[temp].setApm(tempString.trim());//Puede ser nulo, por eso no se ocupa trim
-               alumn[temp].setSemestre(rs.getString(5).trim());
-               alumn[temp].setGrupo(rs.getString(6).trim());
-                       
-               //Aumentar contador temp
-               temp++;
-           }
-           //Cerrar conexion
-            conexion.close();
-            rs.close();
-            st.close(); 
-           
-            return alumn;
+        //Direccion, puerto, nombre de BD, usuario y contraseña
+        Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
+        Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());
+
+        //Ejecutar el Query
+        Statement st = conexion.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        int temp = 0;
+        //Saber cuantos resultados hay
+        String tempString = "";
+        while (rs.next()) {
+            //Obtener los valores
+            alumn[temp] = new Alumno();
+            alumn[temp].setMatricula(rs.getString(1).trim());
+            alumn[temp].setNombre(rs.getString(2).trim());
+            alumn[temp].setApp(rs.getString(3).trim());
+            tempString = rs.getString(4);
+            if (tempString == null)//Si el valor es nulo
+            {
+                tempString = "";
+            }
+            alumn[temp].setApm(tempString.trim());//Puede ser nulo, por eso no se ocupa trim
+            alumn[temp].setSemestre(rs.getString(5).trim());
+            alumn[temp].setGrupo(rs.getString(6).trim());
+
+            //Aumentar contador temp
+            temp++;
+        }
+        //Cerrar conexion
+        conexion.close();
+        rs.close();
+        st.close();
+
+        return alumn;
     }
-    
-    private String getFechaAvanceSemestre() throws SQLException
-    {   //Obtener la fecha en la que se selecciono por ultima vez la opcion de avanzar semestre
-        String query="SELECT fecha "
+
+    private String getFechaAvanceSemestre() throws SQLException {   //Obtener la fecha en la que se selecciono por ultima vez la opcion de avanzar semestre
+        String query = "SELECT fecha "
                 + "from avance_semestre "
                 + "where fecha="
                 + "(select max(fecha) from avance_semestre)";
-         //Direccion, puerto, nombre de BD, usuario y contraseña
-        Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
+        //Direccion, puerto, nombre de BD, usuario y contraseña
+        Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
         Connection conexion = DriverManager.getConnection(
                 datos_conexion.getDireccion(),
-                datos_conexion.getUsuario(), 
+                datos_conexion.getUsuario(),
                 datos_conexion.getContrasenia());
-        Statement stmt=null;
-        ResultSet rs=null;
+        Statement stmt = null;
+        ResultSet rs = null;
         //Agregar la informacion de conexion al stmt
-        stmt=conexion.createStatement();
+        stmt = conexion.createStatement();
         //Ejecutar el query
-        rs=stmt.executeQuery(query);
+        rs = stmt.executeQuery(query);
         //Editar la variable Query, para poner ahi la fecha
-        query="NUNCA";
-        while(rs.next())
-        {
-            query=rs.getString(1).trim();
+        query = "NUNCA";
+        while (rs.next()) {
+            query = rs.getString(1).trim();
         }
         conexion.close();
         stmt.close();
         rs.close();
         return query;
-      
+
     }
 }

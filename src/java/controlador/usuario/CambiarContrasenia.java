@@ -6,7 +6,6 @@
 package controlador.usuario;
 
 import controlador.Conexion_bd;
-import controlador.ConvertirUTF8;
 import java.io.IOException;
 //import java.io.PrintWriter;
 import java.sql.Connection;
@@ -27,6 +26,8 @@ public class CambiarContrasenia extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         HttpSession session=request.getSession(true);
         String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
 
@@ -43,8 +44,8 @@ public class CambiarContrasenia extends HttpServlet {
                  {
                      String contrasenia=(String)request.getParameter("password1");//Obtener la contraseña
                      //Convertir a UTF8
-                     ConvertirUTF8 convert= new ConvertirUTF8();
-                     contrasenia=convert.convertToUTF8(contrasenia);
+                     //ConvertirUTF8 convert= new ConvertirUTF8();
+                     //contrasenia=convert.convertToUTF8(contrasenia);
                      
                      //Realizar el cambio de contraseña
                      try {

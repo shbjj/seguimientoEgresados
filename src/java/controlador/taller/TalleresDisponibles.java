@@ -32,6 +32,8 @@ public class TalleresDisponibles extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //out = response.getWriter();
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(true);
         String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
 
@@ -108,7 +110,8 @@ public class TalleresDisponibles extends HttpServlet {
                 + "WHERE estatus='Abierto' and fechaini>=? and cupo>inscritos and idtaller not in("
                                                                     + "select idtaller " +
                                                                         "from boletas " +
-                                                                        "where num_control="+matricula+" and estatus='Cursando');";
+                                                                        "where num_control="+matricula+" and estatus='Cursando') "
+                                                                        + "order by nombre;";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         stmt = conexion.prepareStatement(query);
@@ -213,7 +216,7 @@ public class TalleresDisponibles extends HttpServlet {
                 datos_conexion.getUsuario(),
                 datos_conexion.getContrasenia());
         //Query de consulta
-        String query = "SELECT count(*)<3 "
+        String query = "SELECT count(*)<2 "
                 + "FROM boletas "
                 + "WHERE num_control=? and estatus='Cursando';";
         PreparedStatement stmt = null;

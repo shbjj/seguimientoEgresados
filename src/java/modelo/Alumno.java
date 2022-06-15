@@ -5,6 +5,13 @@
  */
 package modelo;
 
+import controlador.alumno.AgregarAlumno;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author hbdye
@@ -14,8 +21,9 @@ public class Alumno {
     private String matricula, nombre,
             app, apm, estatus, carrera,
             plan, grupo, semestre,
-            fechaNac, curp, sexo, 
+            fechaNac, curp, sexo,
             estado, municipio, cp, generacion, telefono, correo;
+    Date fechaNacDate;
 
     public String getTelefono() {
         return telefono;
@@ -121,7 +129,27 @@ public class Alumno {
     }
 
     public void setFechaNac(String fechaNac) {
+        
         this.fechaNac = fechaNac;
+    }
+    public void setFechaNacDate(String fechaNac) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date date = null;
+        try {
+            date = sdf1.parse(fechaNac);
+        } catch (ParseException ex) {
+            Logger.getLogger(AgregarAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        java.sql.Date fecha = new java.sql.Date(date.getTime());
+
+        this.fechaNacDate = fecha;
+        this.fechaNac = fechaNac;
+    }
+    
+    
+
+    public Date getFechaDate() {
+        return this.fechaNacDate;
     }
 
     public String getCurp() {
@@ -163,6 +191,10 @@ public class Alumno {
     public void setCp(String cp) {
         this.cp = cp;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Alumno{" + "matricula=" + matricula + ", nombre=" + nombre + ", app=" + app + ", apm=" + apm + ", estatus=" + estatus + ", carrera=" + carrera + ", plan=" + plan + ", grupo=" + grupo + ", semestre=" + semestre + ", fechaNac=" + fechaNac + ", curp=" + curp + ", sexo=" + sexo + ", estado=" + estado + ", municipio=" + municipio + ", cp=" + cp + ", generacion=" + generacion + ", telefono=" + telefono + ", correo=" + correo + ", fechaNacDate=" + fechaNacDate + '}';
+    }
+
 }

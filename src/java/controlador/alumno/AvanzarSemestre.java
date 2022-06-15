@@ -11,13 +11,8 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +34,8 @@ public class AvanzarSemestre extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         out = response.getWriter();
         HttpSession session = request.getSession(true);
         String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo

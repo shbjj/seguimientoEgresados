@@ -17,7 +17,7 @@
                  int rol = Integer.parseInt((String) session.getAttribute("ROL"));//Obtener el rol del usuario
                  String usuario=(String)session.getAttribute("USUARIO");//Obtener nombre de usuario
 %>
-<!DOCTYPE html>
+
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates

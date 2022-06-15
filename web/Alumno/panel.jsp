@@ -4,6 +4,8 @@
     Author     : hbdye
 --%>
 
+<%@page import="modelo.Taller"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="modelo.Encuesta"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -40,9 +42,12 @@ and open the template in the editor.
     </head>
     <body>
         <%
-            Encuesta[] encuestasNoContestadas = (Encuesta[]) request.getAttribute("ENCUESTASNOCONTESTADAS");
-            Encuesta[] encuestasContestadas = (Encuesta[]) request.getAttribute("ENCUESTASCONTESTADAS");
+            //Encuesta[] encuestasNoContestadas = (Encuesta[]) request.getAttribute("ENCUESTASNOCONTESTADAS");
+            //Encuesta[] encuestasContestadas = (Encuesta[]) request.getAttribute("ENCUESTASCONTESTADAS");
 
+            Encuesta[] encuestasNoContestadas = null;
+            Encuesta[] encuestasContestadas = null;
+            ArrayList<Taller> talleres= (ArrayList<Taller>) request.getAttribute("TALLERESCURSANDO");
             String tipo = (String) session.getAttribute("TIPO");//Obtener el tipo de usuario (1 es alumno)
             if (tipo != null)//Si el tipo de usuario es diferente de Nulo (o sea, si se inicio sesion)
             {
@@ -78,6 +83,71 @@ and open the template in the editor.
             <!--
                 Aqui ira todo lo de talleres unu
             -->
+            <!--Tabla de las encuestas-->
+            <div style="height:225px;overflow:auto;">
+                <div class="table-responsive-md">
+                    <table class="table table-striped table-hover">
+                        <thead class="alu-header text-white">
+                            <tr>
+                                <th scope="col" class="col-4">Nombre</th>
+                                <th scope="col" class="col-3 text-center">Instructor</th>
+                                <th scope="col" class="col-3 text-center">Ubicación</th>
+                                <th scope="col" class="col-2 text-center">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                            if (talleres.isEmpty() || talleres==null) //Si no hay encuestas
+                            { %>
+                            <tr>
+                                <th scope="row" colspan="4" class="text-center">
+                                    No tienes talleres registrados.
+                                </th>
+                            </tr>
+                            <% } else {
+                            for(Taller taller: talleres ){
+                            %> 
+                            <tr>
+                                <th scope="row">
+                                    <%=taller.getNombre()%>
+                                </th>
+                                <td class="text-center">
+                                    <%=taller.getInstructor()%>
+                                </td>
+                                <td class="text-center">
+                                    <%=taller.getUbicacion()%>
+                                </td>
+                                <td class="">
+                                    <div class="row text-center">
+                                         <!--Boton taller-->
+                                            <div class="col">
+                                                <a href="<%=request.getContextPath()%>/VerTaller?idTaller=<%=taller.getIdTaller()%>"
+                                                   class="btn btn-primary bi bi-eye-fill text-white" 
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                                   title="Ver detalles"></a>
+                                            </div>
+                                         <!--Boton borrar-->
+                                           <div class="col">
+                                                <a href="<%=request.getContextPath()%>/SalirTaller?id=<%=taller.getIdTaller()%>"
+                                                   class="btn btn-danger bi bi-trash-fill" 
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar" 
+                                                   onclick="return confirm('¿Esta seguro que desea salir del taller <%=taller.getNombre()%>?')"></a>
+                                            </div>
+                                    
+                                    </div>
+                                </td>
+                            </tr>
+                            <%
+                            }
+                            talleres.clear();
+                            }
+                            %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
             <p class="fs-3 alu-titulo mt-md-5">Encuestas</p>
             <!--Tabla de las encuestas-->
             <div style="height:225px;overflow:auto;">

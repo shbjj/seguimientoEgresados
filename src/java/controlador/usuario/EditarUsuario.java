@@ -6,7 +6,6 @@
 package controlador.usuario;
 
 import controlador.Conexion_bd;
-import controlador.ConvertirUTF8;
 import java.io.IOException;
 //import java.io.PrintWriter;
 import java.sql.Connection;
@@ -26,7 +25,9 @@ import javax.servlet.http.HttpSession;
 public class EditarUsuario extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    HttpSession session = request.getSession(true);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession(true);
 
         String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
         if (tipoS != null)//Si se inicio sesión
@@ -37,16 +38,19 @@ public class EditarUsuario extends HttpServlet {
                 if (rolS == 0 || rolS == 1)//Si es SuperAdministrador o Administrador, entonces puede agregar usuarios nuevos
                 {
                     //Objeto para convertir las cadenas recibidas a UTF-8
-                    ConvertirUTF8 convert = new ConvertirUTF8();
+                    //ConvertirUTF8 convert = new ConvertirUTF8();
 
                     //Obtener los valores
                     String user = (String) request.getParameter("user");
                     //Ver si hay valores obtenidos, si no mandar a mensaje de error
                     if (user != null) {
                         //Obtener los valores
-                        user = convert.convertToUTF8(user);
-                        String nombreOriginal = convert.convertToUTF8((String) request.getParameter("nombreOriginal"));
-                        String rol = convert.convertToUTF8((String) request.getParameter("rol"));//No se pregunta si es nulo o vacio ya que es un campo obligatorio
+//                        user = convert.convertToUTF8(user);
+//                        String nombreOriginal = convert.convertToUTF8((String) request.getParameter("nombreOriginal"));
+//                        String rol = convert.convertToUTF8((String) request.getParameter("rol"));//No se pregunta si es nulo o vacio ya que es un campo obligatorio
+                        
+                        String nombreOriginal = (String) request.getParameter("nombreOriginal");
+                        String rol = (String) request.getParameter("rol");//No se pregunta si es nulo o vacio ya que es un campo obligatorio
                         String password = (String) request.getParameter("password1");
                         
                         //Ahora que se tienen los datos del usuario, hay que modificarlos.
@@ -61,7 +65,7 @@ public class EditarUsuario extends HttpServlet {
                              PreparedStatement stmt = null;
                             if(password.compareTo("")!=0)//Si si se cambio la contraseña
                             {
-                                password=convert.convertToUTF8(password);//Convertir a UTF-8
+                                //password=convert.convertToUTF8(password);//Convertir a UTF-8
                                 //Query para conectar
                                 query = "UPDATE administradores "
                                         + "SET nombre=?, contrasenia=md5(?), rol=? "

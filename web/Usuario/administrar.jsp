@@ -34,22 +34,22 @@
     </head>
     <body>
         <%
-    String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
+            String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
 
-         if (tipoS != null)//Si se inicio sesión
-         {
-             if(tipoS.compareTo("2")==0) //Inicia sesión un admin
-             {
-                 int rol = Integer.parseInt((String) session.getAttribute("ROL"));//Obtener el rol del usuario
-                 if(rol==0 || rol==1)//Si es SuperAdministrador o Administrador, entonces puede administrar usuarios 
-                 {    
-                    //Obtener los Atributos enviados desde el Servlet
-                    Usuario[] usuarios = (Usuario[]) request.getAttribute("USUARIOS");
+            if (tipoS != null)//Si se inicio sesión
+            {
+                if (tipoS.compareTo("2") == 0) //Inicia sesión un admin
+                {
+                    int rol = Integer.parseInt((String) session.getAttribute("ROL"));//Obtener el rol del usuario
+                    if (rol == 0 || rol == 1)//Si es SuperAdministrador o Administrador, entonces puede administrar usuarios 
+                    {
+                        //Obtener los Atributos enviados desde el Servlet
+                        Usuario[] usuarios = (Usuario[]) request.getAttribute("USUARIOS");
 
         %>
         <div class="container">
             <%@ include file = "../navbar.jsp" %>
-            
+
             <div class="row">
                 <div class="col-sm-10">
                     <p class="fs-3 font-titulo-enc">Usuarios</p>
@@ -85,32 +85,39 @@
                             </th>
                         </tr>
                         <% } else {
-                            for (int usuario = 0; usuario < usuarios.length; usuario++) 
-                            {
+                            for (int usuario = 0; usuario < usuarios.length; usuario++) {
                         %>   
                         <tr>
                             <th scope="row"><%=usuarios[usuario].getNombre()%>
                             </th>
                             <td class=""><%
-                                if (usuarios[usuario].getRol().compareTo("1") == 0) { %>
+                                switch (usuarios[usuario].getRol()) {
+                                    case "1":
+                                %>
                                 <span class="text-success fw-bold">Administrador</span>   
-                                <%} 
-                                else 
-                                { 
-                                    if (usuarios[usuario].getRol().compareTo("2") == 0)
-                                    { %>
-                                        <span class="text-success fw-bold">Seguimiento de egresados</span>  
-                                    <% }
-                                    else
-                                    { %>
-                                        <span class="text-success fw-bold">Talleres</span>
-                                    <% }
-                                }
+                                <%
+                                        break;
+                                    case "2":
+                                %>
+                                <span class="text-success fw-bold">Seguimiento de egresados</span>  
+                                <%
+                                        break;
+                                    case "3":
+                                %>
+                                <span class="text-success fw-bold">Talleres</span>
+                                <%
+                                        break;
+                                    case "4":
+                                %>
+                                <span class="text-success fw-bold">Capturador</span>
+                                <%
+                                            break;
+                                    }
                                 %>
                             </td>
                             <td class="">
                                 <div class="row">
-                                    
+
                                     <!--Boton editar-->
                                     <div class="col-lg-2 me-xl-2">
                                         <a href="<%=request.getContextPath()%>/CargarUsuario?nombre=<%=usuarios[usuario].getNombre()%>"
@@ -122,8 +129,8 @@
                                         <a href="<%=request.getContextPath()%>/EliminarUsuario?nombre=<%=usuarios[usuario].getNombre()%>"
                                            class="btn btn-danger bi bi-trash-fill"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar"
-                                           onclick="return confirm('¿Esta seguro que desea borrar al usuario \''+
-                                                       '<%=usuarios[usuario].getNombre()%>?\'')"></a>
+                                           onclick="return confirm('¿Esta seguro que desea borrar al usuario \'' +
+                                                           '<%=usuarios[usuario].getNombre()%>?\'')"></a>
                                     </div>
                                 </div>
                             </td>
@@ -135,7 +142,7 @@
                 </table>
             </div>
 
-            
+
         </div>
 
         <!--
@@ -220,48 +227,46 @@
             crossorigin="anonymous"
         ></script>
         <script>
-            var offcanvasElementList = [].slice.call(
-                    document.querySelectorAll(".offcanvas")
-                    );
-            var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
-                return new bootstrap.Offcanvas(offcanvasEl);
-            });
+                                               var offcanvasElementList = [].slice.call(
+                                                       document.querySelectorAll(".offcanvas")
+                                                       );
+                                               var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
+                                                   return new bootstrap.Offcanvas(offcanvasEl);
+                                               });
 
-            var tooltipTriggerList = [].slice.call(
-                    document.querySelectorAll('[data-bs-toggle="tooltip"]')
-                    );
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+                                               var tooltipTriggerList = [].slice.call(
+                                                       document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                                                       );
+                                               var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                                   return new bootstrap.Tooltip(tooltipTriggerEl);
+                                               });
         </script>
 
     </body>
 </html>
 <%
-         }
-                 else//Si no, no tiene permiso
-                 {
-                    request.setAttribute("NOMBRE_MENSAJE", "Error");
-                    request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
-                    request.setAttribute("DESCRIPCION", "No tiene permiso para acceder a este contenido");
-                    request.setAttribute("MENSAJEBOTON", "Volver");
-                    request.setAttribute("DIRECCIONBOTON", "index.jsp");
-                    request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
-                 }
-                     
-             }
-             else//Iniicio sesión otra persona
-             {
+            } else//Si no, no tiene permiso
+            {
                 request.setAttribute("NOMBRE_MENSAJE", "Error");
                 request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
                 request.setAttribute("DESCRIPCION", "No tiene permiso para acceder a este contenido");
                 request.setAttribute("MENSAJEBOTON", "Volver");
                 request.setAttribute("DIRECCIONBOTON", "index.jsp");
                 request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
-             }
-         } else//no hay una sesión iniciada
-         {
-             //Redirigir al login
-             response.sendRedirect(request.getContextPath() + "/login.jsp");
-         }
+            }
+
+        } else//Iniicio sesión otra persona
+        {
+            request.setAttribute("NOMBRE_MENSAJE", "Error");
+            request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
+            request.setAttribute("DESCRIPCION", "No tiene permiso para acceder a este contenido");
+            request.setAttribute("MENSAJEBOTON", "Volver");
+            request.setAttribute("DIRECCIONBOTON", "index.jsp");
+            request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
+        }
+    } else//no hay una sesión iniciada
+    {
+        //Redirigir al login
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+    }
 %>

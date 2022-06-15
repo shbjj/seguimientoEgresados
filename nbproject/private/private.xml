@@ -12,8 +12,15 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/alumno/EditarAlumno.java</file>
-            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/Alumno/editar.jsp</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/modelo/Boleta.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/taller/ListaAsistencia.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/taller/GenerarBoletas.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/css/estilos.css</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/Excel.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/Taller/calificar.jsp</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/web/Alumno/agregar.jsp</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/taller/Prueba.java</file>
+            <file>file:/C:/Users/hbdye/Documents/NetBeansProjects/prueba/seguimientoEgresados/src/java/controlador/taller/CalificarTaller.java</file>
         </group>
     </open-files>
 </project-private>

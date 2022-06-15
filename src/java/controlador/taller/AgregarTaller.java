@@ -6,7 +6,6 @@
 package controlador.taller;
 
 import controlador.Conexion_bd;
-import controlador.ConvertirUTF8;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -63,13 +62,6 @@ public class AgregarTaller extends HttpServlet {
                         String fechaFin = (String) request.getParameter("fechaFin");
                         String[] dias = (String[]) request.getParameterValues("dias");
 
-                        //Convertir a UTF-8
-                        /* = convert.convertToUTF8(nombreTaller);
-                        descripcion = convert.convertToUTF8(descripcion);
-                        instructor = convert.convertToUTF8(instructor);
-                        ubicacion = convert.convertToUTF8(ubicacion);
-                        periodo = convert.convertToUTF8(periodo);
-                        claveTaller = convert.convertToUTF8(claveTaller);*/
 
                         //Obtener los dias y horas que el taller estara abierto
                         Dia[] diasHoras = new Dia[dias.length];
@@ -214,6 +206,7 @@ public class AgregarTaller extends HttpServlet {
                     error(ex2.toString(), request, response);
                 }
             }
+             error(ex.toString(), request, response);
         }
     }
 }

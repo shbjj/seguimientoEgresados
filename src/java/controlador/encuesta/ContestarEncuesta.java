@@ -6,7 +6,7 @@
 package controlador.encuesta;
 
 import controlador.Conexion_bd;
-import controlador.ConvertirUTF8;
+//import controlador.ConvertirUTF8;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -39,7 +39,8 @@ public class ContestarEncuesta extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         //Sesion
         session = request.getSession(true);
         String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
@@ -47,10 +48,10 @@ public class ContestarEncuesta extends HttpServlet {
         if (tipoS != null)//Si se inicio sesión
         {
             //Objeto para convertir cadenas a UTF8
-            ConvertirUTF8 convertir = new ConvertirUTF8();
+            //ConvertirUTF8 convertir = new ConvertirUTF8();
 
             //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
-            response.setContentType("text/html");
+            //response.setContentType("text/html");
             out = response.getWriter();
             
             //Declaración de las variables donde se guardara la información

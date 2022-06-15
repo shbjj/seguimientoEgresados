@@ -129,7 +129,7 @@
                                         </div>
                                         <!--Boton lista de alumnos-->
                                         <div class="col-lg-1 me-lg-4">
-                                            <a href="<%=request.getContextPath()%>/ListaAlumnos?idTaller=<%=((Taller) talleresAbiertos[taller]).getIdTaller()%>"
+                                            <a href="<%=request.getContextPath()%>/ListaAsistencia?idTaller=<%=((Taller) talleresAbiertos[taller]).getIdTaller()%>"
                                                class="btn btn-primary bi bi-card-list text-white"
                                                data-bs-toggle="tooltip" data-bs-placement="bottom" 
                                                title="Lista de alumnos"></a>

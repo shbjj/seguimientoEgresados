@@ -7,7 +7,7 @@ package controlador.alumno;
  */
 
 import controlador.Conexion_bd;
-import controlador.ConvertirUTF8;
+//import controlador.ConvertirUTF8;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -42,25 +42,29 @@ public class EditarAlumno extends HttpServlet {
             throws ServletException, IOException {
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
         //response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         out = response.getWriter();
 
         //Objeto para convertir una cadena a UTF-8
-        ConvertirUTF8 convert = new ConvertirUTF8();
+        //ConvertirUTF8 convert = new ConvertirUTF8();
 
         //Recibir los parametros desde un JSP (Datos de la encuesta)
         String matricula = (String) request.getParameter("matricula");
         if (matricula != null)//Si si se recibieron valores, entonces proceder
         {
             //Obtener los valores
-            matricula = convert.convertToUTF8(matricula);
+            /*matricula = convert.convertToUTF8(matricula);
             String nombre = convert.convertToUTF8((String) request.getParameter("name"));
             String app = convert.convertToUTF8((String) request.getParameter("app"));//No se pregunta si es nulo o vacio ya que es un campo obligatorio
-            String apm = (String) request.getParameter("apm");//Se pregunta si es nulo o vacio ya que no es un campo obligatorio
-            if (apm != null && apm.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
-            {
-                apm = convert.convertToUTF8(apm);
-            }
+            */
+            String nombre = (String) request.getParameter("name");
+            String app = (String) request.getParameter("app");
+            String apm = (String) request.getParameter("apm");
+//            if (apm != null && apm.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
+//            {
+//                apm = convert.convertToUTF8(apm);
+//            }
             String fechaTemp = (String) request.getParameter("fechaNac");
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date date =null;
@@ -72,42 +76,43 @@ public class EditarAlumno extends HttpServlet {
             }
             java.sql.Date fechaNac = new java.sql.Date(date.getTime());
 
-            String curp = convert.convertToUTF8((String) request.getParameter("curp"));
+            //String curp = convert.convertToUTF8((String) request.getParameter("curp"));
+            String curp = (String) request.getParameter("curp");
             String sexo = (String) request.getParameter("sexo");//no es necesario convertir
             String estado = (String) request.getParameter("estado");
-            if (estado != null && estado.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
-            {
-                estado = convert.convertToUTF8(estado);
-            }
+//            if (estado != null && estado.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
+//            {
+//                estado = convert.convertToUTF8(estado);
+//            }
             String municipio = (String) request.getParameter("municipio");
-            if (municipio != null && municipio.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
-            {
-                municipio = convert.convertToUTF8(municipio);
-            }
+//            if (municipio != null && municipio.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
+//            {
+//                municipio = convert.convertToUTF8(municipio);
+//            }
             String cp = (String) request.getParameter("cp");//Aunque son numeros, se puede guardar en un string
             String estatus = (String) request.getParameter("estatus");
             String semestre = (String) request.getParameter("semestre");
             String grupo = (String) request.getParameter("grupo");
             String carrera = (String) request.getParameter("carrera");
-            if (carrera != null && carrera.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
-            {
-                carrera = convert.convertToUTF8(carrera);
-            }
+//            if (carrera != null && carrera.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
+//            {
+//                carrera = convert.convertToUTF8(carrera);
+//            }
             String plan = (String) request.getParameter("plan");
-            if (plan != null && plan.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
-            {
-                plan = convert.convertToUTF8(plan);
-            }
+//            if (plan != null && plan.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
+//            {
+//                plan = convert.convertToUTF8(plan);
+//            }
             String generacion = (String) request.getParameter("generacion");
-            if (generacion != null && generacion.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
-            {
-                generacion = convert.convertToUTF8(generacion);
-            }
+//            if (generacion != null && generacion.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
+//            {
+//                generacion = convert.convertToUTF8(generacion);
+//            }
             String correo = (String) request.getParameter("email");
-            if (correo != null && correo.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
-            {
-                correo = convert.convertToUTF8(correo);
-            }
+//            if (correo != null && correo.compareTo("") != 0)//Si lo recibido es diferente de nulo o diferente de vacio, encontes convertir
+//            {
+//                correo = convert.convertToUTF8(correo);
+//            }
             String telefono = (String) request.getParameter("telefono");
             //Ahora que se tienen los datos del alumno, hay que insertarlos.
             try {

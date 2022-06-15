@@ -35,11 +35,12 @@ public class GraficosEncuesta extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         out=response.getWriter();
         this.response = response;
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
-        response.setContentType("text/html;charset=UTF-8");
+        
         HttpSession session=request.getSession(true);
         String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
 

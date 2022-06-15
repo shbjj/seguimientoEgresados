@@ -152,6 +152,26 @@
         <servlet-name>InscribirTaller</servlet-name>
         <servlet-class>controlador.taller.InscribirTaller</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SalirTaller</servlet-name>
+        <servlet-class>controlador.taller.SalirTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListaAsistencia</servlet-name>
+        <servlet-class>controlador.taller.ListaAsistencia</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CalificarTaller</servlet-name>
+        <servlet-class>controlador.taller.CalificarTaller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerarBoletas</servlet-name>
+        <servlet-class>controlador.taller.GenerarBoletas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Prueba</servlet-name>
+        <servlet-class>controlador.taller.Prueba</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CrearEncuesta</servlet-name>
         <url-pattern>/CrearEncuesta</url-pattern>
@@ -303,6 +323,26 @@
     <servlet-mapping>
         <servlet-name>InscribirTaller</servlet-name>
         <url-pattern>/InscribirTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalirTaller</servlet-name>
+        <url-pattern>/SalirTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListaAsistencia</servlet-name>
+        <url-pattern>/ListaAsistencia</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CalificarTaller</servlet-name>
+        <url-pattern>/CalificarTaller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerarBoletas</servlet-name>
+        <url-pattern>/GenerarBoletas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Prueba</servlet-name>
+        <url-pattern>/Prueba</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

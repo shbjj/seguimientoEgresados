@@ -28,7 +28,8 @@ public class CargarDatosAlumno extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         HttpSession session=request.getSession(true);
         String tipoS=(String)session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
         
@@ -114,23 +115,14 @@ public class CargarDatosAlumno extends HttpServlet {
                         }
                         else//Si no se recibieron valores 
                         {
-                            request.setAttribute("NOMBRE_MENSAJE", "Error");
-                                request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
-                                request.setAttribute("DESCRIPCION", "Error al cargar los datos del alumno, no se recibio ninguna matricula\n");
-                                request.setAttribute("DIRECCIONBOTON","AdministrarAlumno");
-                                request.setAttribute("MENSAJEBOTON","Volver");
-                                request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                                error("Error al cargar los datos del alumno, no se recibio ninguna matricula","AdministrarAlumno", request, response);
                         }    
                             
 			break;
 						
                         default:
-			request.setAttribute("NOMBRE_MENSAJE", "Error");
-	                request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
-        	        request.setAttribute("DESCRIPCION", "No tiene permiso para acceder a este contenido");
-                	request.setAttribute("MENSAJEBOTON", "Volver");
-                	request.setAttribute("DIRECCIONBOTON", "index.jsp");
-                	request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                            error("No tiene permiso para acceder a este contenido","index.jsp", request, response);
+			
 		}
 	}
 	else//no hay una sesión iniciada
@@ -138,6 +130,19 @@ public class CargarDatosAlumno extends HttpServlet {
 	//Redirigir al login
         response.sendRedirect(request.getContextPath() + "/login.jsp");
 	}
+        
+    }
+    void error(String mensaje, String dir, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute("NOMBRE_MENSAJE", "Error");
+                request.setAttribute("SUB_NOMBRE_MENSAJE", "Ha ocurrido un error.");
+                request.setAttribute("DESCRIPCION", mensaje);
+                request.setAttribute("MENSAJEBOTON", "Volver");
+                request.setAttribute("DIRECCIONBOTON", dir);
+                request.getRequestDispatcher("/mensaje.jsp").forward(request, response);
+    }
+    void buscarDatos()
+    {
         
     }
 

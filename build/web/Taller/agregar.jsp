@@ -62,7 +62,7 @@
                             <div class="mb-2 form-floating">
 
                                 <textarea class="form-control" name="descripcion" id="inputDescripcion" style="height: 75px"  
-                                          placeholder="Descripción" maxlength="<%=taller.getTamDescripcion()%>" required></textarea>
+                                          placeholder="Descripción" maxlength="<%=taller.getTamDescripcion()%>" ></textarea>
                                 <label for="inputDescripcion" class="form-label">Descripción</label>
                             </div>
                             <!--
@@ -100,7 +100,7 @@
                                     -->
                                     <div class="mb-2 form-floating">
                                         <input type="text" class="form-control" name="claveTaller" id="inputClave" 
-                                               placeholder="NClave" maxlength="<%=taller.getTamClave()%>" required>
+                                               placeholder="NClave" maxlength="<%=taller.getTamClave()%>" >
                                         <label for="inputClave" class="form-label">Clave</label>
                                     </div>
                                 </div>
@@ -113,6 +113,7 @@
                                     <input type="number" class="form-control col-md-4" name="cupo" id="inputCupo" 
                                            placeholder="Cupo" 
                                            min="1"
+                                           value="25"
                                            required>
                                 </div>
                                 <div class="col-md-9">

@@ -8,7 +8,6 @@ package controlador.encuesta;
 import controlador.Conexion_bd;
 import java.io.IOException;
 //import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +30,8 @@ public class CrearEncuesta extends HttpServlet {
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
         //response.setContentType("text/html");
         //PrintWriter out = response.getWriter();
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
         //Recibir los parametros desde un JSP
         String nombre, descripcion, instrucciones, despedida, fechaTemp, clave;
@@ -42,14 +43,14 @@ public class CrearEncuesta extends HttpServlet {
         clave = (String) request.getParameter("clave");
 
         //Pasar los datos recibidos a UTF-8
-        byte[] tempBytes = nombre.getBytes();
-        nombre = new String(tempBytes, StandardCharsets.UTF_8);
-        tempBytes = descripcion.getBytes();
-        descripcion = new String(tempBytes, StandardCharsets.UTF_8);
-        tempBytes = instrucciones.getBytes();
-        instrucciones = new String(tempBytes, StandardCharsets.UTF_8);
-        tempBytes = despedida.getBytes();
-        despedida = new String(tempBytes, StandardCharsets.UTF_8);
+//        byte[] tempBytes = nombre.getBytes();
+//        nombre = new String(tempBytes, StandardCharsets.UTF_8);
+//        tempBytes = descripcion.getBytes();
+//        descripcion = new String(tempBytes, StandardCharsets.UTF_8);
+//        tempBytes = instrucciones.getBytes();
+//        instrucciones = new String(tempBytes, StandardCharsets.UTF_8);
+//        tempBytes = despedida.getBytes();
+//        despedida = new String(tempBytes, StandardCharsets.UTF_8);
         
         //Convertir String de fecha
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -62,8 +63,8 @@ public class CrearEncuesta extends HttpServlet {
             }
             java.sql.Date fecha = new java.sql.Date(date.getTime());
 
-        tempBytes = clave.getBytes();
-        clave = new String(tempBytes, StandardCharsets.UTF_8);
+//        tempBytes = clave.getBytes();
+//        clave = new String(tempBytes, StandardCharsets.UTF_8);
         
 
         try {
@@ -75,13 +76,14 @@ public class CrearEncuesta extends HttpServlet {
                     datos_conexion.getDireccion(), 
                     datos_conexion.getUsuario(), 
                     datos_conexion.getContrasenia());
+            
 
             //Connection conexion = DriverManager.getConnection("jdbc:postgresql://45.33.125.66:5432/prepa_seis_v1", "postgres", "Adgjmptw1797@1");
 
             //Query para conectar
             String query = "Insert into encuestas"
-                    + "(nombre, descripcion, instrucciones, despedida, fecha, clave, habilitada) "
-                    + "values(?,?,?,?,?,?,'s');";
+                    + "(id_encuestas,nombre, descripcion, instrucciones, despedida, fecha, clave, habilitada) "
+                    + "values(1,?,?,?,?,?,?,'s');";
             //out.println(query);//Imprimir por errores
 
             //Ejecutar el Query

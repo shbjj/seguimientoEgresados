@@ -106,6 +106,7 @@ and open the template in the editor.
                         <option value="1" selected>Administrador</option>
                         <option value="2">Seguimiento de egresados</option>
                         <option value="3">Talleres</option>
+                        <option value="4">Capturador</option>
                   <%
                           break;
                       case "2"://Seguimiento de egresados
@@ -113,6 +114,7 @@ and open the template in the editor.
                         <option value="1">Administrador</option>
                         <option value="2" selected>Seguimiento de egresados</option>
                         <option value="3">Talleres</option>
+                        <option value="4">Capturador</option>
                   <%
                           break;
                       case "3"://Talleres
@@ -120,8 +122,16 @@ and open the template in the editor.
                         <option value="1">Administrador</option>
                         <option value="2">Seguimiento de egresados</option>
                         <option value="3" selected>Talleres</option>
+                        <option value="4">Capturador</option>
                   <%
                           break;
+                       case "4"://Talleres
+                       %>
+                       <option value="1">Administrador</option>
+                        <option value="2">Seguimiento de egresados</option>
+                        <option value="3">Talleres</option>
+                        <option value="4" selected>Capturador</option>
+                  <%
                   }
                   %>
                 

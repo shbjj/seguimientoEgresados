@@ -6,7 +6,7 @@
 package controlador.encuesta;
 
 import controlador.Conexion_bd;
-import controlador.ConvertirUTF8;
+//import controlador.ConvertirUTF8;
 import java.io.IOException;
 //import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -31,8 +31,9 @@ public class AgregarPreguntas extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        ConvertirUTF8 convert=new ConvertirUTF8();
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        //ConvertirUTF8 convert=new ConvertirUTF8();
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
         /*response.setContentType("text/html");
         PrintWriter out = response.getWriter();*/
@@ -57,12 +58,12 @@ public class AgregarPreguntas extends HttpServlet {
                     obligatoria_s=(String) request.getParameter("formObligatoria" + numPreg);//obligatoria
             
             //Convertir a UTF-8
-                    tempBytes= pregunta_s.getBytes();
-                    pregunta_s = new String(tempBytes, StandardCharsets.UTF_8);
-                    tempBytes= tipo_s.getBytes();
-                    tipo_s = new String(tempBytes, StandardCharsets.UTF_8);
-                    tempBytes= obligatoria_s.getBytes();
-                    obligatoria_s = new String(tempBytes, StandardCharsets.UTF_8);
+//                    tempBytes= pregunta_s.getBytes();
+//                    pregunta_s = new String(tempBytes, StandardCharsets.UTF_8);
+//                    tempBytes= tipo_s.getBytes();
+//                    tipo_s = new String(tempBytes, StandardCharsets.UTF_8);
+//                    tempBytes= obligatoria_s.getBytes();
+//                    obligatoria_s = new String(tempBytes, StandardCharsets.UTF_8);
             
             //Crear un objeto pregunta y guardarlo en el vector
             preguntas[(numPreg - 1)] = new Pregunta(
@@ -88,7 +89,8 @@ public class AgregarPreguntas extends HttpServlet {
                     //out.print("<br>Resp. " + numResp + (String) request.getParameter("formRespuesta" + numPreg + numResp));
 
                     //Guardar los datos en la pregunta
-                    preguntas[(numPreg - 1)].respuestas[(numResp - 1)] = convert.convertToUTF8((String) request.getParameter("formRespuesta" + numPreg + numResp));
+                    //preguntas[(numPreg - 1)].respuestas[(numResp - 1)] = convert.convertToUTF8((String) request.getParameter("formRespuesta" + numPreg + numResp));
+                    preguntas[(numPreg - 1)].respuestas[(numResp - 1)] = (String) request.getParameter("formRespuesta" + numPreg + numResp);
                 }
             }
         }

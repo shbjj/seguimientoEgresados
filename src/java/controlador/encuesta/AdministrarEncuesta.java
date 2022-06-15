@@ -27,6 +27,8 @@ public void service(HttpServletRequest request, HttpServletResponse response)
         //Para la salida de mendajes en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
         //response.setContentType("text/html");
         //PrintWriter out = response.getWriter();
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
 
         try {
             //Cargar el druver en la clase

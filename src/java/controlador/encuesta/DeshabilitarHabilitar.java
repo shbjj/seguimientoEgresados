@@ -28,6 +28,8 @@ public class DeshabilitarHabilitar extends HttpServlet {
     
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         //Declaración de las variables donde se guardara la información
         int idEncuesta = Integer.parseInt((String) request.getParameter("idEncuesta"));
         //Inicializar cosas necesarias pata la conexion a BD

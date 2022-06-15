@@ -7,7 +7,6 @@ package controlador.taller;
 
 import controlador.Conexion_bd;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -31,6 +30,8 @@ public class VerTaller extends HttpServlet {
     //PrintWriter out;
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         //Para la salida de mendajes en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
         //response.setContentType("text/html");
         //out = response.getWriter();

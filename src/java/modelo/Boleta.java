@@ -12,6 +12,15 @@ package modelo;
 public class Boleta {
     //Variables
     private int idTaller;
+    private int matricula;
+
+    public int getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
     private String estatus;//Cursando, Aprobado, Reprobado
     private float calificacion;
     

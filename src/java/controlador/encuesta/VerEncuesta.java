@@ -29,7 +29,8 @@ public class VerEncuesta extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         out = response.getWriter();
 
         //Obtener el ID de la encuesta a contestar desde el JSP

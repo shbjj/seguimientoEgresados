@@ -6,7 +6,6 @@
 package controlador.encuesta;
 
 import controlador.Conexion_bd;
-import controlador.ConvertirUTF8;
 import java.io.IOException;
 import java.io.PrintWriter;
 //import java.nio.charset.StandardCharsets;
@@ -34,21 +33,27 @@ public class EditarEncuesta extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //para que la salida sea en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         out = response.getWriter();
         
         //Objeto para convertir una cadena a UTF-8
-        ConvertirUTF8 convert = new ConvertirUTF8();
+        //ConvertirUTF8 convert = new ConvertirUTF8();
         
         //Obtener Datos
 
             //Recibir los parametros desde un JSP (Datos de la encuesta)
             String nombre, descripcion, instrucciones, despedida, fecha;
-            nombre = convert.convertToUTF8((String) request.getParameter("nombre"));
-            descripcion = convert.convertToUTF8((String) request.getParameter("descripcion"));
-            instrucciones = convert.convertToUTF8((String) request.getParameter("instrucciones"));
-            despedida = convert.convertToUTF8((String) request.getParameter("despedida"));
-            fecha = convert.convertToUTF8((String) request.getParameter("fecha"));
+//            nombre = convert.convertToUTF8((String) request.getParameter("nombre"));
+//            descripcion = convert.convertToUTF8((String) request.getParameter("descripcion"));
+//            instrucciones = convert.convertToUTF8((String) request.getParameter("instrucciones"));
+//            despedida = convert.convertToUTF8((String) request.getParameter("despedida"));
+//            fecha = convert.convertToUTF8((String) request.getParameter("fecha"));
+            nombre = (String) request.getParameter("nombre");
+            descripcion = (String) request.getParameter("descripcion");
+            instrucciones = (String) request.getParameter("instrucciones");
+            despedida = (String) request.getParameter("despedida");
+            fecha = (String) request.getParameter("fecha");
             
             int idEncuesta = Integer.parseInt((String) request.getParameter("idEncuesta"));
             int cantPreguntas = Integer.parseInt((String) request.getParameter("cantPreguntas"));
@@ -61,9 +66,12 @@ public class EditarEncuesta extends HttpServlet {
 
             for (int numPreg = 1; numPreg <= cantPreguntas; numPreg++) {
                 //Obtener los datos de la pregunta
-                pregunta_s = convert.convertToUTF8((String) request.getParameter("formPregunta" + numPreg)); //pregunta
-                tipo_s = convert.convertToUTF8((String) request.getParameter("formTipoPregunta" + numPreg));//tipo
-                obligatoria_s = convert.convertToUTF8((String) request.getParameter("formObligatoria" + numPreg));//obligatoria
+//                pregunta_s = convert.convertToUTF8((String) request.getParameter("formPregunta" + numPreg)); //pregunta
+//                tipo_s = convert.convertToUTF8((String) request.getParameter("formTipoPregunta" + numPreg));//tipo
+//                obligatoria_s = convert.convertToUTF8((String) request.getParameter("formObligatoria" + numPreg));//obligatoria
+                pregunta_s = (String) request.getParameter("formPregunta" + numPreg); //pregunta
+                tipo_s = (String) request.getParameter("formTipoPregunta" + numPreg);//tipo
+                obligatoria_s = (String) request.getParameter("formObligatoria" + numPreg);//obligatoria
 
                 //Crear un objeto pregunta y guardarlo en el vector
                 preguntas[(numPreg - 1)] = new Pregunta(
@@ -86,7 +94,8 @@ public class EditarEncuesta extends HttpServlet {
                     for (int numResp = 1; numResp <= preguntas[(numPreg - 1)].getNum_respuestas(); numResp++) {
 
                         //Guardar los datos en la pregunta
-                        preguntas[(numPreg - 1)].respuestas[(numResp - 1)] = convert.convertToUTF8((String) request.getParameter("formRespuesta" + numPreg + numResp));
+//                        preguntas[(numPreg - 1)].respuestas[(numResp - 1)] = convert.convertToUTF8((String) request.getParameter("formRespuesta" + numPreg + numResp));
+                        preguntas[(numPreg - 1)].respuestas[(numResp - 1)] = (String) request.getParameter("formRespuesta" + numPreg + numResp);
                     }
                 }
 

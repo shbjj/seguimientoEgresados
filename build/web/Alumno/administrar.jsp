@@ -24,10 +24,11 @@
             integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
             crossorigin="anonymous"
             />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
         <script
             language="JavaScript"
             type="text/javascript"
-            src="jquery/jquery-3.6.0.min.js"
+            src="https://code.jquery.com/jquery-3.5.1.js"
         ></script>
         <link rel="stylesheet" href="css/estilos.css" />
         <title>Alumnos</title>
@@ -37,8 +38,7 @@
             //Obtener los Atributos enviados desde el Servlet
             Alumno[] alumnos = (Alumno[]) request.getAttribute("ALUMNOS");
             Alumno[] egresados = (Alumno[]) request.getAttribute("EGRESADOS");
-            String fechaAvanceSemestre=(String) request.getAttribute("FECHA_AVANCE_SEMESTRE");
-            
+            String fechaAvanceSemestre = (String) request.getAttribute("FECHA_AVANCE_SEMESTRE");
         %>
         <div class="container">
             <%@ include file = "../navbar.jsp" %>
@@ -71,12 +71,11 @@
                     </button>
                 </div>
             </div>
-            
-                <form method="POST" action="<%=request.getContextPath()%>/CambiarEstadoAlumno">
-                <div style="height:225px;overflow:auto;"> 
+
+            <form method="POST" action="<%=request.getContextPath()%>/CambiarEstadoAlumno">
 
                 <div class="table-responsive-md">
-                    <table class="table table-striped table-hover ">
+                    <table class="table table-striped table-hover mt-1" id="tablaAlumnos">
                         <thead class="barra-card-enc text-white">
                             <tr>
 
@@ -94,50 +93,84 @@
                                     No hay ningun alumno.
                                 </th>
                             </tr>
-                            <% } %>
+                            <% } else {
+                                Alumno temp = null;
+                                for (int alumno = 0; alumno < alumnos.length; alumno++) {
+                                    temp = alumnos[alumno];
+                            %>
+                            <tr >
+                                <td class='col-1'><%=temp.getMatricula()%></td>
+                                <td class='col-6'><%=temp.getApp()%> <%if (!temp.getApm().isEmpty()) {%><%=temp.getApm()%><%}%> <%=temp.getNombre()%> </td>
+                                <td class='col-1 text-center'><%=temp.getSemestre()%></td>
+                                <td class='col-1 text-center'><%=temp.getGrupo()%></td>
+                                <td class='col-2'>
+                                    <div class="row">
+                                        <!--Boton ver alumno-->
+                                        <div class="col-lg-2 me-xl-2">
+                                            <a href="<%=request.getContextPath()%>/VerAlumno?matricula=<%=temp.getMatricula()%>"
+                                               class="btn btn-primary bi bi-eye-fill text-white" 
+                                               data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                               title="Ver detalles"></a>
+                                        </div>
+                                        <!--Boton editar-->
+                                        <div class="col-lg-2 me-xl-2">
+                                            <a href="<%=request.getContextPath()%>/CargarDatosAlumno?matricula=<%=temp.getMatricula()%>"
+                                               class="btn btn-primary bi bi-pencil-fill" 
+                                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar"></a> 
+                                        </div>
+                                        <!--Boton borrar-->
+                                        <div class="col-lg-2 me-xl-2">
+                                            <a href="<%=request.getContextPath()%>/EliminarAlumno?matricula=<%=temp.getMatricula()%>"
+                                               class="btn btn-danger bi bi-trash-fill" 
+                                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar" 
+                                               onclick="return confirm('¿Esta seguro que desea borrar al alumno <%=temp.getNombre()%>')"></a>
+                                        </div>
+                                        <!--Cambiar estado-->
+                                        <div class="col-lg-2 me-xl-2 ms-3 mt-2">
+                                            <input class="form-check-input" data-bs-toggle="tooltip"
+                                                   data-bs-placement="bottom" 
+                                                   title="Cambiar a egresado"  type="checkbox" value="<%=temp.getMatricula()%>" name="cambioEstado" id="cambioEstado">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr >
+
+                            <%
+                                        }
+                                    }%>
                         </tbody>
                     </table>
                 </div>
-                        
-                </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text bi bi-search" id="inputAlumnosBuscar">
-                                Buscar alumno por matricula
-                            </span>
-                            <input type="text" class="form-control" aria-label="Buscar" aria-describedby="inputAlumnosBuscar" id="alumnosInput" >
-                        </div>
 
-                    </div>
-                    <div class="col-md-2">
+                <div class="row mt-1">
+                    <div class="col-md-4">
                         <div class='d-grid gap-2'>
                             <a class="btn btn-danger boton bi bi-arrow-left fw-bold"
-                                    href="<%=request.getContextPath()%>/RetrocederSemestre"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    title="Disminuir el nivel de semestre a los alumnos" 
-                                    onclick="return confirm('¿Estas seguro que quieres disminuir el semestre a todos los alumnos?')"
-                                    >
+                               href="<%=request.getContextPath()%>/RetrocederSemestre"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               title="Disminuir el nivel de semestre a los alumnos" 
+                               onclick="return confirm('¿Estas seguro que quieres disminuir el semestre a todos los alumnos?')"
+                               >
                                 Regresar semestre
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class='d-grid gap-2'>
                             <a class="btn btn-danger boton bi bi-arrow-right fw-bold"
-                                    href="<%=request.getContextPath()%>/AvanzarSemestre"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    title="Aumentar el nivel de semestre a los alumnos" 
-                                    onclick="return confirm('¿Estas seguro que quieres aumentar el semestre a todos los alumnos? La ultima vez que se utilizó esta opción fue el <%=fechaAvanceSemestre%>')"
-                                    >
+                               href="<%=request.getContextPath()%>/AvanzarSemestre"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               title="Aumentar el nivel de semestre a los alumnos" 
+                               onclick="return confirm('¿Estas seguro que quieres aumentar el semestre a todos los alumnos? La ultima vez que se utilizó esta opción fue el <%=fechaAvanceSemestre%>')"
+                               >
                                 Avanzar semestre
                             </a>
                         </div>
                     </div>
-                    
-                    <div class="col-md-3">
+
+                    <div class="col-md-4">
                         <div class='d-grid gap-2'>
                             <button class="btn btn-warning boton bi bi-arrow-clockwise fw-bold"
                                     data-bs-toggle="tooltip"
@@ -151,65 +184,101 @@
                     </div>
                 </div>
             </form>
-                        
-                        
-                        <!--Egresados-->
-                        
+
+
+            <!--Egresados-->
+
             <div class="row">
                 <div class="col-sm-10">
                     <p class="fs-3 font-titulo-enc">Egresados (<%=egresados.length%>)</p>
                 </div>
             </div>
-            
+
             <form method="POST" action="<%=request.getContextPath()%>/CambiarEstadoAlumno">
-                <div style="height:225px;overflow:auto;"> 
+                <div class="table-responsive-md" >
+                        <table class="table table-striped table-hover mt-1" id="tablaEgresados">
+                            <thead class="barra-card-enc text-white">
+                                <tr>
 
-                <div class="table-responsive-md">
-                    <table class="table table-striped table-hover ">
-                        <thead class="barra-card-enc text-white">
-                            <tr>
+                                    <th scope="col" class="col-1">Matricula</th>
+                                    <th scope="col" class="col-6">Nombre</th>
+                                    <th scope="col" class="col-1 text-center">Grupo</th>
+                                    <th scope="col" class="col-2">Opciones</th>
+                                </tr>
+                            </thead>                    
+                            <tbody id='egresadosTabla'>
+                                <% if (egresados.length == 0) { %>
+                                <tr>
+                                    <th scope="row" colspan="5" class="text-center">
+                                        No hay ningun egresado.
+                                    </th>
+                                </tr>
+                                <% } else {
+                                    Alumno temp = null;
+                                    for (int alumno = 0; alumno < egresados.length; alumno++) {
+                                        temp = egresados[alumno];
+                                %>
+                                <tr >
+                                    <td class='col-1'><%=temp.getMatricula()%></td>
+                                    <td class='col-6'><%=temp.getApp()%> <%if (!temp.getApm().isEmpty()) {%><%=temp.getApm()%><%}%> <%=temp.getNombre()%></td>
+                                    <td class='col-1 text-center'><%=temp.getGrupo()%></td>
+                                    <td class='col-2'>
+                                        <div class="row">
+                                            <!--Boton ver alumno-->
+                                            <div class="col-lg-2 me-xl-2">
+                                                <a href="<%=request.getContextPath()%>/VerAlumno?matricula=<%=temp.getMatricula()%>"
+                                                   class="btn btn-primary bi bi-eye-fill text-white" 
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                                   title="Ver detalles"></a>
+                                            </div>
+                                            <!--Boton editar-->
+                                            <div class="col-lg-2 me-xl-2">
+                                                <a href="<%=request.getContextPath()%>/CargarDatosAlumno?matricula=<%=temp.getMatricula()%>"
+                                                   class="btn btn-primary bi bi-pencil-fill" 
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar"></a> 
+                                            </div>
+                                            <!--Boton borrar-->
+                                            <div class="col-lg-2 me-xl-2">
+                                                <a href="<%=request.getContextPath()%>/EliminarAlumno?matricula=<%=temp.getMatricula()%>"
+                                                   class="btn btn-danger bi bi-trash-fill" 
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar" 
+                                                   onclick="return confirm('¿Esta seguro que desea borrar al alumno <%=temp.getNombre()%>')"></a>
+                                            </div>
+                                            <!--Cambiar estado-->
+                                            <div class="col-lg-2 me-xl-2 ms-3 mt-2">
+                                                <input class="form-check-input" data-bs-toggle="tooltip"
+                                                       data-bs-placement="bottom" 
+                                                       title="Cambiar a alumno"  type="checkbox" value="<%=temp.getMatricula()%>" name="cambioEstado" id="cambioEstado">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr >
 
-                                <th scope="col" class="col-1">Matricula</th>
-                                <th scope="col" class="col-6">Nombre</th>
-                                <th scope="col" class="col-1 text-center">Grupo</th>
-                                <th scope="col" class="col-2">Opciones</th>
-                            </tr>
-                        </thead>                    
-                        <tbody id='egresadosTabla'>
-                            <% if (egresados.length == 0) { %>
-                            <tr>
-                                <th scope="row" colspan="5" class="text-center">
-                                    No hay ningun egresado.
-                                </th>
-                            </tr>
-                            <% } %>
-                            
-                        </tbody>
-                    </table>
-                </div>
-                </div>
-                        <div class="row">
-                            <div class="col-md-9">
-                              <div class="input-group mb-1">
-                                <span class="input-group-text bi bi-search" id="inputEgresadosBuscar"> Buscar egresado por matricula</span>
-                                <input type="text" class="form-control" aria-label="Buscar" aria-describedby="inputEgresadosBuscar" id="egresadosInput">
-                              </div>
+                                <%
+                                        }
+                                    }
+                                %>
 
-                            </div>
-                            <div class="col-md-3">
-                                <div class='d-grid gap-2'>
-                                    <button class="btn btn-warning boton bi bi-arrow-counterclockwise fw-bold"
+                            </tbody>
+                        </table>
+                    </div>
+                <div class="row mt-1">
+                    <div class="col-md-9">
+                    </div>
+                    <div class="col-md-3">
+                        <div class='d-grid gap-2'>
+                            <button class="btn btn-warning boton bi bi-arrow-counterclockwise fw-bold"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="bottom"
                                     title="Cambiar de egresados a alumnos" 
                                     onclick="return confirm('¿Estas seguro que quieres cambiar el estado de estos egresados a alumnos?')"
                                     > Convertir a alumnos</button>
-                                </div>
-                            </div>
                         </div>
+                    </div>
+                </div>
             </form>
-                        
-                      
+
+
         </div>
 
         <!--
@@ -239,7 +308,7 @@
                 <p>
                     <span class="fs-5 fw-bold font-titulo-enc">Ver detalles: </span>Permite ver los datos del alumno.
                 </p>
-                
+
                 <p>
                     <span class="fs-5 fw-bold font-titulo-enc">Editar: </span>Permite modificar los datos de un alumno, 
                     como nombre, apellidos, fecha de nacimiento, etc. (No se puede editar el número de matrícula, si 
@@ -298,179 +367,51 @@
             integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
             crossorigin="anonymous"
         ></script>
-        
-        <script>//Codigo para busqueda
-            //Variable que guardara a todos los alumnos 
-            const alumnos=[
-                <%for(int alumno=0; alumno<alumnos.length; alumno++)
-                { %>
-                        {matricula: '<%=alumnos[alumno].getMatricula()%>', 
-                            nombre: '<%=alumnos[alumno].getApp()%> <%=alumnos[alumno].getApm()%> <%=alumnos[alumno].getNombre()%>',
-                          semestre: '<%=alumnos[alumno].getSemestre()%>',
-                             grupo: '<%=alumnos[alumno].getGrupo()%>', 
-                            numero: '<%=(alumno+1)%>'
-                        },
-                <% } %>
-            ];
-             //Variable que guardara a todos los egresados 
-            const egresados=[
-                <%for(int egresado=0; egresado<egresados.length; egresado++)
-                { %>
-                        {matricula: '<%=egresados[egresado].getMatricula()%>', 
-                            nombre: '<%=egresados[egresado].getApp()%> <%=egresados[egresado].getApm()%> <%=egresados[egresado].getNombre()%>',
-                             grupo: '<%=egresados[egresado].getGrupo()%>', 
-                            numero: '<%=(egresado+1)%>'
-                        },
-                <% } %>
-            ];
-            //Variables de busqueda
-                //Alumnos
-                const busquedaAlumnos=document.querySelector('#alumnosInput');
-                const resultadoAlumnos=document.querySelector('#alumnosTabla');
-                //Egresados
-                const busquedaEgresados=document.querySelector('#egresadosInput');
-                const resultadoEgresados=document.querySelector('#egresadosTabla');
-            //Variables temporales
-            let matricula;//no hay que convertir a minusculas
-            let nombre;
-            let semestre;
-            let grupo;
-            let numero;
-            //Metodo de busqueda para alumnos
-            const filtrarAlumnos=()=>{
-                //console.log("oa");
-                resultadoAlumnos.innerHTML='';
-                
-                const texto=busquedaAlumnos.value;//Como seran numeros, no hay que cambiar a minusculas .toLowerCase()
-                for(let alumno of alumnos)
-                {
-                    matricula=alumno.matricula;//no hay que convertir a minusculas
-                    nombre=alumno.nombre;
-                    semestre=alumno.semestre;
-                    grupo=alumno.grupo;
-                    numero=alumno.numero;
-                    if(matricula.indexOf(texto)!==-1)
-                    {
-                        resultadoAlumnos.innerHTML+=`<tr ><td class='col-1'>`+matricula+`</td>
-                        <td class='col-6'>`+nombre+`</td>
-                        <td class='col-1 text-center'>`+semestre+`</td>
-                        <td class='col-1 text-center'>`+grupo+`</td>
-                        <td class='col-2'>
-                        <div class="row">
-                                        <!--Boton ver alumno-->
-                                        <div class="col-lg-2 me-xl-2">
-                                            <a href="<%=request.getContextPath()%>/VerAlumno?matricula=`+matricula+`"
-                                               class="btn btn-primary bi bi-eye-fill text-white" 
-                                               data-bs-toggle="tooltip" data-bs-placement="bottom" 
-                                               title="Ver detalles"></a>
-                                        </div>
-                                        <!--Boton editar-->
-                                        <div class="col-lg-2 me-xl-2">
-                                            <a href="<%=request.getContextPath()%>/CargarDatosAlumno?matricula=`+matricula+`"
-                                               class="btn btn-primary bi bi-pencil-fill" 
-                                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar"></a> 
-                                        </div>
-                                        <!--Boton borrar-->
-                                        <div class="col-lg-2 me-xl-2">
-                                            <a href="<%=request.getContextPath()%>/EliminarAlumno?matricula=`+matricula+`"
-                                               class="btn btn-danger bi bi-trash-fill" 
-                                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar" 
-                                               onclick="return confirm('¿Esta seguro que desea borrar al alumno `+nombre+`')"></a>
-                                        </div>
-                                        <!--Cambiar estado-->
-                                        <div class="col-lg-2 me-xl-2 ms-3 mt-2">
-                                            <input class="form-check-input" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" 
-                                    title="Cambiar a alumno"  type="checkbox" value="`+matricula+`" name="cambioEstado" id="cambioEstado">
-                                        </div>
-                                    </div>
-                        </td>
-                        </tr >`;
-                    }
-                }
-                if(resultadoAlumnos.innerHTML==='')
-                {
-                resultadoAlumnos.innerHTML=== `<tr><td span="c5">No encontrado...</td></tr>`;
-                }
-            }
-            //Metodo de busqueda para egresados
-            const filtrarEgresados=()=>{
-                //console.log("oa");
-                resultadoEgresados.innerHTML='';
-                
-                const texto=busquedaEgresados.value;//Como seran numeros, no hay que cambiar a minusculas .toLowerCase()
-                for(let egresado of egresados)
-                {
-                    matricula=egresado.matricula;//no hay que convertir a minusculas
-                    nombre=egresado.nombre;
-                    grupo=egresado.grupo;
-                    numero=egresado.numero;
-                    if(matricula.indexOf(texto)!==-1)
-                    {
-                        resultadoEgresados.innerHTML+=`<tr ><td class='col-1'>`+matricula+`</td>
-                        <td class='col-6'>`+nombre+`</td>
-                        <td class='col-1 text-center'>`+grupo+`</td>
-                        <td class='col-2'>
-                        <div class="row">
-                                        <!--Boton ver alumno-->
-                                        <div class="col-lg-2 me-xl-2">
-                                            <a href="<%=request.getContextPath()%>/VerAlumno?matricula=`+matricula+`"
-                                               class="btn btn-primary bi bi-eye-fill text-white"
-                                               data-bs-toggle="tooltip" data-bs-placement="bottom" 
-                                               title="Ver detalles"></a>
-                                        </div>
-                                        <!--Boton editar-->
-                                        <div class="col-lg-2 me-xl-2">
-                                            <a href="<%=request.getContextPath()%>/CargarDatosAlumno?matricula=`+matricula+`"
-                                               class="btn btn-primary bi bi-pencil-fill"
-                                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar"></a>
-                                        </div>
-                                        <!--Boton borrar-->
-                                        <div class="col-lg-2 me-xl-2">
-                                            <a href="<%=request.getContextPath()%>/EliminarAlumno?matricula=`+matricula+`"
-                                               class="btn btn-danger bi bi-trash-fill" 
-                                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Borrar" 
-                                               onclick="return confirm('¿Esta seguro que desea borrar al alumno `+nombre+`')"></a>
-                                        </div>
-                                        <!--Cambiar estado-->
-                                        <div class="col-lg-2 me-xl-2 ms-3 mt-2">
-                                            <input class="form-check-input" data-bs-toggle="tooltip" 
-                                    data-bs-placement="bottom"
-                                    title="Cambiar a alumno"  type="checkbox" value="`+matricula+`" name="cambioEstado" id="cambioEstado">
-                                        </div>
-                                    </div>
-                        </td>
-                        </tr >`;
-                    }
-                }
-                if(resultadoEgresados.innerHTML==='')
-                {
-                    resultadoEgresados.innerHTML=== `<tr><td span="c5">No encontrado...</td></tr>`;
-                }
-            }
-            
-            
-            busquedaAlumnos.addEventListener('keyup', filtrarAlumnos);
-            busquedaEgresados.addEventListener('keyup', filtrarEgresados);
-            filtrarAlumnos();
-            filtrarEgresados();
-            
-        </script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
         <script>/*Codigo para boostrap*/
-            var offcanvasElementList = [].slice.call(
-                    document.querySelectorAll(".offcanvas")
-                    );
-            var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
-                return new bootstrap.Offcanvas(offcanvasEl);
-            });
+                                        var offcanvasElementList = [].slice.call(
+                                                document.querySelectorAll(".offcanvas")
+                                                );
+                                        var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
+                                            return new bootstrap.Offcanvas(offcanvasEl);
+                                        });
 
-            var tooltipTriggerList = [].slice.call(
-                    document.querySelectorAll('[data-bs-toggle="tooltip"]')
-                    );
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+                                        var tooltipTriggerList = [].slice.call(
+                                                document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                                                );
+                                        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                            return new bootstrap.Tooltip(tooltipTriggerEl);
+                                        });
+                                        /*Codigo para la tabla*/
+                                        $(document).ready(function () {
+                                            var tableAlumnos=$('#tablaAlumnos').DataTable({
+                                                        "scrollY":        "200px",
+                                                        "scrollCollapse": true,
+                                                        "paging":         false,
+                                                        "language": {
+                                                                    "search": "Buscar",
+                                                                    "zeroRecords": "No encontrado :(",
+                                                                    "info": "Showing page _PAGE_ of _PAGES_",
+                                                                    "infoEmpty": "No hay alumnos registrados",
+                                                                },
+                                                        "paging": false,
+                                                        "info": false
+                                                    });
+                                            var tableEgresados=$('#tablaEgresados').DataTable({
+                                                        "scrollY":        "200px",
+                                                        "scrollCollapse": true,
+                                                        "paging":         false,
+                                                        "language": {
+                                                                    "search": "Buscar",
+                                                                    "zeroRecords": "No encontrado :(",
+                                                                    "info": "Showing page _PAGE_ of _PAGES_",
+                                                                    "infoEmpty": "No hay egresados registrados",
+                                                                },
+                                                        "paging": false,
+                                                        "info": false
+                                                    });
+                                        });
         </script>
-        
+
     </body>
 </html>

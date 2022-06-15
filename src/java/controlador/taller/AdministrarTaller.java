@@ -31,6 +31,8 @@ public class AdministrarTaller extends HttpServlet {
         //Para la salida de mendajes en html (no es tan correcto hacerlo ya que los servlets no deber tener salida)
         //response.setContentType("text/html");
         //out = response.getWriter();
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(true);
         String tipoS = (String) session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
 

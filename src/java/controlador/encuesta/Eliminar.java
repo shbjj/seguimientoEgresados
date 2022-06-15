@@ -30,6 +30,8 @@ public class Eliminar extends HttpServlet {
 
         String idEncuesta = (String) request.getParameter("idEncuesta");
         try {
+            response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
             Class.forName("org.postgresql.Driver");
             Conexion_bd datos_conexion = new Conexion_bd();//Aqui se guardan los datos de la conexion
             Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());

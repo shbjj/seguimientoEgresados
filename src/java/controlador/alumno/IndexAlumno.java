@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.Encuesta;
+import modelo.Taller;
 
 /**
  *
@@ -29,6 +31,8 @@ public class IndexAlumno extends HttpServlet {
     
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         HttpSession session=request.getSession(true);
         String tipo=(String)session.getAttribute("TIPO");//Obtener el tipo de sesion que hay activo
         
@@ -87,8 +91,15 @@ public class IndexAlumno extends HttpServlet {
                         request.setAttribute("ENCUESTASCONTESTADAS", encuestasContestadas);
                         
                     }
+                    
+                    query="select t.idtaller, t.nombre, t.instructor, t.ubicacion " +
+                            "from talleres t, boletas b " +
+                            "where t.idtaller=b.idtaller and b.num_control="+matricula;
+                    request.setAttribute("TALLERESCURSANDO", getTalleres(query));
                     //Redireccionar al panel del alumno
                     request.getRequestDispatcher("Alumno/panel.jsp").forward(request, response);
+                    
+                    
                 
                 
                 } catch (ClassNotFoundException | SQLException ex) {
@@ -113,6 +124,34 @@ public class IndexAlumno extends HttpServlet {
             //Redirigir al login
             response.sendRedirect(request.getContextPath() + "/login.jsp");
         }
+    }
+    private ArrayList<Taller> getTalleres(String query) throws SQLException
+    {//Este metodo retornara el numero de encuestas, se debe de recibir el query
+            //Direccion, puerto, nombre de BD, usuario y contraseña
+            Conexion_bd datos_conexion=new Conexion_bd();//Aqui se guardan los datos de la conexion
+            Connection conexion = DriverManager.getConnection(datos_conexion.getDireccion(), datos_conexion.getUsuario(), datos_conexion.getContrasenia());
+        
+            //Ejecutar el Query
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            
+            ArrayList<Taller> t= new ArrayList();
+            Taller temp=null;
+            while(rs.next())
+            {
+                temp= new Taller();
+                temp.setIdTaller(rs.getInt(1));
+                temp.setNombre(rs.getString(2));
+                temp.setInstructor(rs.getString(3));
+                temp.setUbicacion(rs.getString(4));
+                
+                t.add(temp);
+            }
+            //Cerrar conexion
+            conexion.close();
+            rs.close();
+            st.close();
+            return t;
     }
     private int getNumEncuestas(String query) throws SQLException
     {//Este metodo retornara el numero de encuestas, se debe de recibir el query
